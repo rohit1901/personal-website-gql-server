@@ -86,3 +86,11 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+# Build Output
+dist/
+
+# IDEs
+.idea/
+
+.DS_Store

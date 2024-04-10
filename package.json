@@ -1,0 +1,41 @@
+{
+  "name": "personal-website-gql-server",
+  "version": "1.0.0",
+  "description": "A GQL Server for my Website",
+  "main": "index.js",
+  "scripts": {
+    "compile": "tsc",
+    "start": "npm run compile && node ./dist/src/index.js",
+    "generate": "graphql-codegen"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rohit1901/personal-website-gql-server.git"
+  },
+  "keywords": [
+    "node",
+    "javascript",
+    "typescript",
+    "server",
+    "graphql",
+    "json-graphql-server"
+  ],
+  "author": "Rohit Khanduri",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rohit1901/personal-website-gql-server/issues"
+  },
+  "homepage": "https://github.com/rohit1901/personal-website-gql-server#readme",
+  "type": "module",
+  "dependencies": {
+    "@apollo/server": "^4.10.2",
+    "graphql": "^16.8.1"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.2",
+    "@graphql-codegen/typescript": "^4.0.6",
+    "@graphql-codegen/typescript-resolvers": "^4.0.6",
+    "@types/node": "^20.12.7",
+    "typescript": "^5.4.4"
+  }
+}
