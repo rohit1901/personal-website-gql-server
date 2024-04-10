@@ -1,123 +1,124 @@
 type Basics {
-  name: String
-  label: String
-  image: String
-  email: String
-  phone: String
-  url: String
-  summary: String
-  location: Location
-  profiles: [Profile]
+    name: String
+    label: String
+    image: String
+    email: String
+    phone: String
+    url: String
+    summary: String
+    location: Location
+    profiles: [Profile]
 }
 
 type Location {
-  address: String
-  postalCode: String
-  city: String
-  countryCode: String
-  region: String
+    address: String
+    postalCode: String
+    city: String
+    countryCode: String
+    region: String
 }
 
 type Profile {
-  network: String
-  username: String
-  url: String
+    network: String
+    username: String
+    url: String
 }
 
 type Work {
-  name: String
-  position: String
-  url: String
-  startDate: String
-  endDate: String
-  summary: String
-  highlights: [String]
+    name: String
+    position: String
+    url: String
+    image: String
+    startDate: String
+    endDate: String
+    summary: String
+    highlights: [String]
 }
 
 type Volunteer {
-  organization: String
-  position: String
-  url: String
-  startDate: String
-  endDate: String
-  summary: String
-  highlights: [String]
+    organization: String
+    position: String
+    url: String
+    startDate: String
+    endDate: String
+    summary: String
+    highlights: [String]
 }
 
 type Education {
-  institution: String
-  url: String
-  area: String
-  studyType: String
-  startDate: String
-  endDate: String
-  score: String
-  courses: [String]
+    institution: String
+    url: String
+    area: String
+    studyType: String
+    startDate: String
+    endDate: String
+    score: String
+    courses: [String]
 }
 
 type Award {
-  title: String
-  date: String
-  awarder: String
-  summary: String
+    title: String
+    date: String
+    awarder: String
+    summary: String
 }
 
 type Certificate {
-  name: String
-  date: String
-  issuer: String
-  url: String
+    name: String
+    date: String
+    issuer: String
+    url: String
 }
 
 type Publication {
-  name: String
-  publisher: String
-  releaseDate: String
-  url: String
-  summary: String
+    name: String
+    publisher: String
+    releaseDate: String
+    url: String
+    summary: String
 }
 
 type Skill {
-  name: String
-  level: String
-  keywords: [String]
+    name: String
+    level: String
+    keywords: [String]
 }
 
 type Language {
-  language: String
-  fluency: String
+    language: String
+    fluency: String
 }
 
 type Interest {
-  name: String
-  keywords: [String]
+    name: String
+    keywords: [String]
 }
 
 type Reference {
-  name: String
-  reference: String
+    name: String
+    reference: String
 }
 
 type Project {
-  name: String
-  startDate: String
-  endDate: String
-  description: String
-  highlights: [String]
-  url: String
+    name: String
+    startDate: String
+    endDate: String
+    description: String
+    highlights: [String]
+    url: String
 }
 
 type Query {
-  basics: Basics
-  work: [Work]
-  volunteer: [Volunteer]
-  education: [Education]
-  awards: [Award]
-  certificates: [Certificate]
-  publications: [Publication]
-  skills: [Skill]
-  languages: [Language]
-  interests: [Interest]
-  references: [Reference]
-  projects: [Project]
+    basics: Basics
+    work: [Work]
+    volunteer: [Volunteer]
+    education: [Education]
+    awards: [Award]
+    certificates: [Certificate]
+    publications: [Publication]
+    skills: [Skill]
+    languages: [Language]
+    interests: [Interest]
+    references: [Reference]
+    projects: [Project]
 }

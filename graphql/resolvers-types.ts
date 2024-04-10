@@ -147,6 +147,7 @@ export type Work = {
   __typename?: 'Work';
   endDate?: Maybe<Scalars['String']['output']>;
   highlights?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  image?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   position?: Maybe<Scalars['String']['output']>;
   startDate?: Maybe<Scalars['String']['output']>;
@@ -396,6 +397,7 @@ export type VolunteerResolvers<ContextType = any, ParentType extends ResolversPa
 export type WorkResolvers<ContextType = any, ParentType extends ResolversParentTypes['Work'] = ResolversParentTypes['Work']> = ResolversObject<{
   endDate?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   highlights?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
+  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   position?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   startDate?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
