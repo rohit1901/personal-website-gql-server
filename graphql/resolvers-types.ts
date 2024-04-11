@@ -39,6 +39,7 @@ export type Basics = {
 
 export type Book = {
   __typename?: 'Book';
+  cover: Scalars['String']['output'];
   description?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   slug: Scalars['String']['output'];
@@ -354,6 +355,7 @@ export type BasicsResolvers<ContextType = any, ParentType extends ResolversParen
 }>;
 
 export type BookResolvers<ContextType = any, ParentType extends ResolversParentTypes['Book'] = ResolversParentTypes['Book']> = ResolversObject<{
+  cover?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
