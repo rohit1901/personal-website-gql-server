@@ -16,6 +16,11 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type Author = {
+  __typename?: 'Author';
+  name: Scalars['String']['output'];
+};
+
 export type Award = {
   __typename?: 'Award';
   awarder?: Maybe<Scalars['String']['output']>;
@@ -39,6 +44,7 @@ export type Basics = {
 
 export type Book = {
   __typename?: 'Book';
+  authors: Array<Author>;
   cover: Scalars['String']['output'];
   description?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
@@ -280,6 +286,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
+  Author: ResolverTypeWrapper<Author>;
   Award: ResolverTypeWrapper<Award>;
   Basics: ResolverTypeWrapper<Basics>;
   Book: ResolverTypeWrapper<Book>;
@@ -308,6 +315,7 @@ export type ResolversTypes = ResolversObject<{
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
+  Author: Author;
   Award: Award;
   Basics: Basics;
   Book: Book;
@@ -333,6 +341,11 @@ export type ResolversParentTypes = ResolversObject<{
   Work: Work;
 }>;
 
+export type AuthorResolvers<ContextType = any, ParentType extends ResolversParentTypes['Author'] = ResolversParentTypes['Author']> = ResolversObject<{
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type AwardResolvers<ContextType = any, ParentType extends ResolversParentTypes['Award'] = ResolversParentTypes['Award']> = ResolversObject<{
   awarder?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   date?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -355,6 +368,7 @@ export type BasicsResolvers<ContextType = any, ParentType extends ResolversParen
 }>;
 
 export type BookResolvers<ContextType = any, ParentType extends ResolversParentTypes['Book'] = ResolversParentTypes['Book']> = ResolversObject<{
+  authors?: Resolver<Array<ResolversTypes['Author']>, ParentType, ContextType>;
   cover?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -510,6 +524,7 @@ export type WorkResolvers<ContextType = any, ParentType extends ResolversParentT
 }>;
 
 export type Resolvers<ContextType = any> = ResolversObject<{
+  Author?: AuthorResolvers<ContextType>;
   Award?: AwardResolvers<ContextType>;
   Basics?: BasicsResolvers<ContextType>;
   Book?: BookResolvers<ContextType>;

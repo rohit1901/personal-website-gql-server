@@ -120,13 +120,16 @@ enum ReadingStatus {
     DROPPED
     NONE
 }
-
+type Author {
+    name: String!
+}
 type Book {
     id: ID!
     slug: String!
     title: String!
     description: String
     cover: String!
+    authors: [Author!]!
 }
 
 type UserLoginResponse {
