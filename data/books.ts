@@ -1,297 +1,13 @@
-import { readFileSync } from "node:fs";
-import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from "@apollo/server/standalone";
-import { Resolvers } from "../graphql/resolvers-types";
-export enum ReadingStatus {
-  Dropped = "DROPPED",
-  Finished = "FINISHED",
-  IsReading = "IS_READING",
-  None = "NONE",
-  WantsToRead = "WANTS_TO_READ",
-}
-export const RESUME = {
-  basics: {
-    name: "Rohit Khanduri",
-    label: "Software Architect",
-    image: "/portfolio/profile.pic.svg",
-    email: "rohit.khanduri@hotmail.com",
-    url: "https://www.rohit.khanduri.de",
-    summary: `With over a decade of successful tenure in software development,
-        I bring a robust background as a distinguished Software Architect specializing in Microservice Architecture.
-        My expertise spans the entire software development lifecycle, enriched further by extensive experience in agile methodologies, particularly Scrum.
-        Notably, my international project involvements across Germany, France, India, Japan
-        and beyond have honed my prowess in leading diverse software teams, showcasing my ability to collaborate seamlessly across borders.
-        I aim to contribute my expertise in fostering innovation, leveraging technology stacks,
-        and driving the evolution of the tech landscape as a Software Architect.
-        My academic foundation includes a Master of Science in Applied Mathematics for Network and Data Science
-        from Hochschule Mittweida, Germany, and a Bachelor of Technology in Computer Science from Gautam Buddh Technical University in India.`,
-    location: {
-      address: "Frankfurt am Main, Germany",
-      postalCode: "60326",
-      city: "Frankfurt am Main",
-      countryCode: "DE",
-      region: "Hessen",
-    },
-    profiles: [
-      {
-        network: "LinkedIn",
-        url: "https://www.linkedin.com/in/rohit-khanduri-9098b84a/",
-      },
-      {
-        network: "Github",
-        url: "https://github.com/rohit1901",
-      },
-      {
-        network: "Twitter",
-        url: "https://twitter.com/JohnnyD78310768",
-      },
-      {
-        network: "Instagram",
-        url: "https://www.instagram.com/johnny.drama.chase/",
-      },
-      {
-        network: "Substack",
-        url: "https://rohitkhanduri.substack.com/",
-      },
-    ],
-  },
-  work: [
-    {
-      name: "Adesso SE",
-      location: "Frankfurt am Main, Germany",
-      position: "Software Architect",
-      url: "https://www.adesso.de/",
-      description: `Adesso SE is a German IT service provider with more than 10,000 employees.`,
-      startDate: "08-2020",
-      summary: `As a Software Architect and a Consultant, I am responsible for the design and implementation of Software Solutions for our clients.
-                I am also responsible for the technical leadership of the development team and occassionally review the architecture of the existing systems.`,
-      highlights: [
-        "A part of  the Adesso Talent Pool as a high potential employee",
-        "Successfully led the development of new microservice architectures for clients",
-        "Mentored junior developers and interns",
-        "Conducted workshops and training sessions for the various teams",
-      ],
-      image: "/portfolio/assets/adesso.png",
-    },
-    {
-      name: "Finatix GmbH",
-      location: "Leipzig, Germany",
-      position: "Software Engineer (Working Student)",
-      url: "https://www.finatix.de/",
-      description: `Finatix GmbH is a German IT service provider.`,
-      startDate: "09-2019",
-      endDate: "07-2020",
-      summary: `As a Software Engineer, I was responsible for the development of new features for the existing software solutions.
-                I was also responsible for the maintenance of the existing software solutions.`,
-      highlights: [
-        "Developed new features for the existing software solutions",
-        "Maintained the existing software solutions",
-      ],
-      image: "/portfolio/assets/finatix.png",
-    },
-    {
-      name: "Peak Performance Apps GmbH",
-      location: "Leipzig, Germany",
-      position: "Software Engineer (Working Student)",
-      url: "https://appsfactory.de/",
-      description: `Peak Performance Apps GmbH (Subsidiary of Appsfactory GmbH) is a German IT service provider.`,
-      startDate: "05-2019",
-      endDate: "08-2019",
-      summary: `As a Software Engineer, I was responsible for the development of new features for the existing software solutions.
-                I was also responsible for the maintenance of the existing software solutions.`,
-      highlights: [
-        "Developed new features for the existing software solutions",
-        "Maintained the existing software solutions",
-      ],
-      image: "/portfolio/assets/ppa.png",
-    },
-    {
-      name: "Appsfactory GmbH",
-      location: "Leipzig, Germany",
-      position: "Software Engineer (Working Student)",
-      url: "https://appsfactory.de/",
-      description: `Appsfactory GmbH is a German IT service provider.`,
-      startDate: "12-2017",
-      endDate: "04-2019",
-      summary: `As a Software Engineer, I was responsible for the development of new features for the existing software solutions.
-                I was also responsible for the maintenance of the existing software solutions.`,
-      highlights: [
-        "Developed new features for the existing software solutions",
-        "Maintained the existing software solutions",
-      ],
-      image: "/portfolio/assets/appsfactory.ico",
-    },
-    {
-      name: "Iris Software Inc. (SSA Infosystems Pvt. Ltd.)",
-      location: "Noida, India",
-      position: "Team Lead/ Software Engineer",
-      url: "https://www.ssa-infosystems.com/",
-      description: `Iris Software Inc. is a multinational IT service provider.`,
-      startDate: "09-2016",
-      endDate: "10-2017",
-      summary: `As a Team Lead, I was responsible for the development of new features for the existing software solutions,
-                mentoring junior developers and interns, conducting workshops and training sessions for the various teams.
-                Conducted code reviews and was responsible for the technical leadership of the development team.`,
-      highlights: [
-        "Frontend (UI) Team Lead for 11 frontend developers",
-        "Making technical decisions",
-        "Responsible for developing new features",
-        "Responsible for upgrading Angular version from 1 to 2",
-        "Conducting code reviews and quality checks",
-        "Regular and direct customer communication",
-      ],
-      image: "/portfolio/assets/iris.jpeg",
-    },
-    {
-      name: "Virtusa Corp.",
-      location: "Noida, India",
-      position: "Business Analyst/ Software Engineer",
-      url: "https://www.virtusa.com/",
-      description: `Virtusa Corp. is multinational IT service provider.`,
-      startDate: "02-2015",
-      endDate: "08-2016",
-      summary: `As a Business Analyst, I was responsible for the requirement gathering,
-                preparing the requirement documents, preparing the wireframes, preparing the user stories,
-                preparing the acceptance criteria and conducting the UAT. As a Software Engineer, I was responsible for the
-                development of new features for the existing software solutions.`,
-      highlights: [
-        "Planning and execution of business and requirement analyses",
-        "Software development of new functionalities",
-        "Developing complete functionalities from Java REST endpoints to fully functional AngularJS components.",
-      ],
-      image: "/portfolio/assets/virtusa.jpeg",
-    },
-    {
-      name: "Genpact Headstrong Capital Markets",
-      location: "Noida, India",
-      position: "Software Engineer",
-      url: "https://www.genpact.com/",
-      description: `Genpact Headstrong Capital Markets is a multinational IT service provider.`,
-      startDate: "11-2013",
-      endDate: "01-2015",
-      summary: `As a Software Engineer, I was responsible for the development of new features for the existing software solutions.`,
-      highlights: [
-        "Developing new features for the existing software solutions",
-        "Developing new functionalities in Calypso",
-      ],
-      image: "/portfolio/assets/genpact.jpeg",
-    },
-    {
-      name: "NEC Technologies India Pvt. Ltd.",
-      location: "Noida, India",
-      position: "L3 Support Engineer/ Software Engineer",
-      url: "https://in.nec.com/",
-      description: `NEC Technologies India Pvt. Ltd. is a multinational IT service provider.`,
-      startDate: "08-2012",
-      endDate: "10-2013",
-      summary: `As a L3 Support Engineer, I was responsible for the support of the existing software solutions.
-                As a Software Engineer, I was responsible for the development of new features for the existing software solutions.`,
-      highlights: [
-        "Supporting the existing software solutions",
-        "Developing new features for the existing software solutions",
-      ],
-      image: "/portfolio/assets/nec.png",
-    },
-  ],
-  volunteer: [
-    {
-      organization: "Robin Hood Army",
-      position: "Volunteer",
-      url: "https://robinhoodarmy.com/",
-      startDate: "08-2014",
-      endDate: "07-2017",
-      summary: `As a Volunteer, I was responsible for the distribution of food to the needy people.`,
-      highlights: [
-        "Distributed food to the needy people",
-        "Conducted food distribution drives",
-      ],
-    },
-  ],
-  education: [
-    {
-      institution: "Hochsch ule Mittweida",
-      location: "Mittweida, Germany",
-      area: "Applied Mathematics for Network and Data Science",
-      studyType: "Master",
-      startDate: "10-2017",
-      endDate: "09-2019",
-    },
-    {
-      institution: "Gautam Buddh Technical University",
-      location: "Noida, India",
-      area: "Computer Science",
-      studyType: "Bachelor",
-      startDate: "08-2008",
-      endDate: "06-2012",
-    },
-  ],
-  awards: [
-    {
-      title: "Adesso Talent Pool",
-      date: "08-2020",
-      awarder: "Adesso SE",
-      summary: `Adesso Talent Pool is an exclusive program designed to recognize and reward employees
-                for their exceptional work performance and strong work ethics.
-                This exclusive promotion initiative aimed to identify and appreciate individuals with
-                the potential to propel the company forward, offering unique opportunities for networking and professional growth within adesso.`,
-    },
-    {
-      title: "Certificate of Appreciation",
-      date: "07-2017",
-      awarder: "SSA Infosystems Pvt. Ltd.",
-      summary: `Certificate of Appreciation is an award that is granted to employees
-                who've worked exceptionally well and have won accolades from the client.`,
-    },
-    {
-      title: "Round of Applause",
-      date: "07-2017",
-      awarder: "SSA Infosystems Pvt. Ltd.",
-      summary:
-        "Round of Applause is an award that is granted to employees who've worked exceptionally well in a particular month.",
-    },
-    {
-      title: "Top Talent",
-      date: "08-2015",
-      awarder: "Virtusa Corp.",
-      summary: "Top Talent for the successful completion of the project.",
-    },
-  ],
-  publications: [
-    {
-      name: "Fraud Detection using Machine Learning",
-      publisher: "Hochschule Mittweida",
-      releaseDate: "12-2018",
-      url: "https://monami.hs-mittweida.de/frontdoor/index/index/year/2023/docId/13759",
-      summary: `Fraud detection is a critical issue in the financial sector.
-                This paper presents a machine learning approach to detect fraud in the financial sector.`,
-    },
-  ],
-  languages: [
-    {
-      language: "English",
-      fluency: "Professional working proficiency",
-    },
-    {
-      language: "German",
-      fluency: "Elementary proficiency",
-    },
-    {
-      language: "Hindi",
-      fluency: "Native proficiency",
-    },
-  ],
-  meta: [
-    {
-      canonical: "https://www.rohit.khanduri.de",
-      version: "1.0.0",
-      lastModified: "2021-08-06",
-    },
-  ],
-};
-export const ReadingStates = {
+`
+Query
+curl -X POST -H "Content-Type: application/json"
+-H 'Authorization: Bearer BEARER_TOKEN'
+--data '{ "query": "query { myReadingStates { status book { id slug title description } } }" }' https://literal.club/graphql/
+`;
+export const BooksData = {
   myReadingStates: [
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cl5af8esc1212780hefwyhv7jwh",
         slug: "peter-zeihan-end-of-the-world-is-just-the-beginning-8vffa",
@@ -300,7 +16,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cl6vj0vbm2213050ii2slfewcy9",
         slug: "konstantin-kisin-immigrants-love-letter-to-the-west-agxu4",
@@ -309,7 +25,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "cluqm6r8v14490160hab1ykrdaht",
         slug: "steven-r-gundry-gut-check-k9oyo",
@@ -318,7 +34,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckq2mjiru101701rirpmixerfe",
         slug: "persuader-r68lq",
@@ -328,7 +44,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckr1r1vqg0bd501crkqbe8d23",
         slug: "lee-childdie-trying-n5pb2",
@@ -337,7 +53,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckpoap40k507121gmzmud25la7",
         slug: "the-ministry-for-the-future-9lbo1",
@@ -347,7 +63,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckrbperrr81444183s753tb4cl",
         slug: "the-art-of-war-ibl05",
@@ -357,7 +73,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckt4dhak04410814tc523y1edl",
         slug: "dawn-dais-the-sht-no-one-tells-you-o3u46",
@@ -367,7 +83,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckrp4wvhr651081czqt3tc6b37",
         slug: "bringing-up-bebe-8pipc",
@@ -377,7 +93,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cku7i0sx6341606pu7azjru370r",
         slug: "daniel-james-brown-facing-the-mountain-2c0rv",
@@ -387,7 +103,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckjso7owr44110zj15xsb95ua",
         slug: "the-rise-and-fall-of-the-dinosaurs-57130",
@@ -397,7 +113,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckr1rl2e60h4u01cr4tgg3fvh",
         slug: "lee-childgone-tomorrow-wbmbh",
@@ -406,7 +122,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckjlyu2c025562107y1kehc5e2",
         slug: "chasing-the-sun-iu6uu",
@@ -416,7 +132,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckr1tbcvv0z1e01cr9sa0vjzj",
         slug: "lee-childrunning-blind-8362o",
@@ -425,7 +141,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckr1syzcp0v6s01crkr99lgn3",
         slug: "lee-childpast-tense-38pnq",
@@ -435,7 +151,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "cl084zg3g986580hvpf6cpp2sg",
         slug: "sara-manning-peskin-a-molecule-away-from-madness-pnijm",
@@ -445,7 +161,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckpeh8mdb22791rk96zenrvnc",
         slug: "killing-floor-m4nl7",
@@ -455,7 +171,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "clo32p7pd16109270hgdi6sam3s3",
         slug: "harrison-scott-key-how-to-stay-married-cj96o",
@@ -465,7 +181,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckpimc6bt8464051ib7m7sz2gis",
         slug: "free-speech-and-why-it-matters-a1qvc",
@@ -475,7 +191,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckup7mff4519211eu1ajahdo88",
         slug: "colleen-hoover-verity-qo7ia",
@@ -485,7 +201,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckmauiqgm18741ijairp9coz8",
         slug: "the-rosie-result-gjqe3",
@@ -495,7 +211,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckrage5a40doe01bj96wya091",
         slug: "david-baldaccimemory-man-nkmv2",
@@ -505,7 +221,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "cks5radmu7347111798ad191my7",
         slug: "the-secret-of-the-nagas-nyymh",
@@ -515,7 +231,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "cknlxndyd374691iaha0rklj0x",
         slug: "the-cafe-on-the-edge-of-the-world-2omju",
@@ -525,7 +241,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "cksdzwu0j17451l198sqg67scl",
         slug: "wanting-57l4x",
@@ -534,7 +250,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckioobor607200yg5uloza1l7",
         slug: "born-a-crime-64qov",
@@ -544,7 +260,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckhdifu2f04530zkhdxrud59j",
         slug: "the-selfish-gene-zmf2p",
@@ -554,7 +270,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckhq875le11630zg1i9axvlhv",
         slug: "invisible-women-lvxxl",
@@ -564,7 +280,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cluqm71fk14556400habal97u1lk",
         slug: "marcelo-gleiser-dawn-of-a-mindful-universe-0yaqf",
@@ -573,7 +289,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckp83sd5r46081rl974b2zygm",
         slug: "the-immortal-life-of-henrietta-lacks-6hx9x",
@@ -583,7 +299,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckiuwf2dq86430zk5my1u63tv",
         slug: "how-we-got-to-now-5l5ob",
@@ -593,7 +309,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckiuwgjlx176920zk5e1qej45p",
         slug: "a-short-history-of-nearly-everything-pjmlh",
@@ -603,7 +319,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckp5lyaag880091gjsffzsmbvb",
         slug: "the-code-book-jxanh",
@@ -613,7 +329,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cl2cmez4z2532780igztxew12oa",
         slug: "ankur-warikoo-do-epic-shit-n5pc2",
@@ -622,7 +338,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckpsjx7bl10381rjmv7pidqy7",
         slug: "why-were-polarized-rzmhh",
@@ -632,7 +348,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckg3mdj5u1327gmx2oantq1kb",
         slug: "steve-jobs-o59au",
@@ -642,7 +358,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckhghhkl511970z955fcjz3uz",
         slug: "a-gentleman-in-moscow-vk7y0",
@@ -652,7 +368,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckgm1gbse94400ybvhhozigmo",
         slug: "what-if-4oglc",
@@ -662,7 +378,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckrgyzf671445171excpex5itrb",
         slug: "101-essays-that-will-change-the-way-you-think-fqpyx",
@@ -672,7 +388,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckr1q13ki008l01cr76v5bdrg",
         slug: "lee-child61-hours-nav36",
@@ -681,7 +397,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckraen1q505xe01bjjdvpr5yk",
         slug: "lee-childecho-burning-ip0ea",
@@ -690,7 +406,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckr1tojvi13hg01crekbxgl22",
         slug: "lee-childaffair-ymxl4",
@@ -699,7 +415,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckrz6zr2v10971941798efjzsrzd",
         slug: "the-whisper-man-g5heq",
@@ -709,7 +425,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckjlyrjxc23187107yeidqcr9u",
         slug: "the-emperor-of-all-maladies-fvrh7",
@@ -719,7 +435,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckrp6b2b61044161czq766eufwk",
         slug: "a-thousand-brains-cenlj",
@@ -729,7 +445,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "cklgk98vz313861ifbbtjmmzmf",
         slug: "gone-girl-bjq8u",
@@ -739,7 +455,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "clpcyhz849131230hgdc2zv30z8",
         slug: "philippa-perry-the-book-you-wish-your-parents-had-read-and-your-children-will-be-glad-that-you-did-c67i7",
@@ -749,7 +465,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cksy54umq2492531j8g2ae565il",
         slug: "the-happiest-baby-on-the-block-i84yi",
@@ -759,7 +475,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckkln8g1k142991i7juluiok1f",
         slug: "the-midnight-library-mrpx0",
@@ -769,7 +485,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cks8wursv9105341k98n29n5x2a",
         slug: "bebe-day-by-day-y36ya",
@@ -779,7 +495,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckr1uqxtd1el501crvg9bbatw",
         slug: "ernesto-guevarathe-motorcycle-diaries-qqxhz",
@@ -788,7 +504,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckrbpe3hg78433183sevluna3r",
         slug: "the-future-of-capitalism-r9znw",
@@ -798,7 +514,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckq80vv1i1626071i7wk70o6yxg",
         slug: "models-of-the-mind-bb0ka",
@@ -808,7 +524,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckrp0fnd2780692178fmnkuwza6",
         slug: "lost-in-math-j20lg",
@@ -818,7 +534,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cksal2cy112773bn98pq5z9tlx",
         slug: "genius-makers-ip0yj",
@@ -828,7 +544,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckpsnnhc5162811rjmhav0xc6o",
         slug: "the-geography-of-thought-aekpx",
@@ -838,7 +554,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cl5vbiu8k3650150hh0pj0coqwl",
         slug: "barbara-kingsolver-demon-copperhead-r1x7k",
@@ -848,7 +564,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckq0rfjgy06251riltmthdg12",
         slug: "the-sixth-extinction-85kwa",
@@ -858,7 +574,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckpq14r482712901giv5ge32c8m",
         slug: "animal-farm-30k4n",
@@ -868,7 +584,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckppt6ptz879421givm8w3ek9a",
         slug: "humble-pi-prfxc",
@@ -878,7 +594,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckp41kjdw13431gjs2n0gwpgc",
         slug: "six-easy-pieces-yi24x",
@@ -888,7 +604,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckpq118332628421givsspzq362",
         slug: "on-earth-were-briefly-gorgeous-fvb2g",
@@ -898,7 +614,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckli141rz606421ii32nexoytp",
         slug: "the-song-of-achilles-uwgco",
@@ -908,7 +624,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.IsReading,
+      status: "IS_READING",
       book: {
         id: "ckikds6gf01560zhfha1gtsvm",
         slug: "dune-2fou9",
@@ -918,7 +634,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "cl3wvlkuj3170180hfbwie98ksv",
         slug: "dick-hill-lee-child-a-wanted-man-ebd33",
@@ -927,7 +643,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckrp10jaf930289178fl8umly42",
         slug: "origin-story-45yoy",
@@ -937,7 +653,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckr1uaxaj19ya01crc706iqb8",
         slug: "lee-childthe-hard-way-nobgl",
@@ -946,7 +662,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckr1vxhvs1roq01crlxbuaedz",
         slug: "without-fail-jack-reacher-yr3wl",
@@ -955,7 +671,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckpepv4hs59801rk9qm1ayynu",
         slug: "the-martian-4cp60",
@@ -965,7 +681,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "clbzynuni9031670ht9me75tenb",
         slug: "bill-mcguire-hothouse-earth-ahjkq",
@@ -975,7 +691,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "cki5y0xdp803810c1su0oq752",
         slug: "the-book-thief-khp98",
@@ -985,7 +701,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "cluqm6ssa14504570habtt0ovxkq",
         slug: "gernot-starke-michael-simons-stefan-zorner-ralf-d-muller-arc42-by-example-3rrdz",
@@ -994,7 +710,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckl941odl251261i4lsv1w3vyv",
         slug: "ikigai-qy3fr",
@@ -1004,7 +720,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckr1rjsni0gqa01creqwvulxj",
         slug: "matt-ridleygenome-if7z2",
@@ -1013,7 +729,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "cl01qs43b2426640jsu11dwpw7z",
         slug: "douglas-murray-the-war-on-the-west-g9k8g",
@@ -1023,7 +739,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckp8doyeq4433761i8pty7ivbcv",
         slug: "a-brief-history-of-time-uurgp",
@@ -1033,7 +749,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckpoav7yu763971gmzo3mktetj",
         slug: "the-seven-husbands-of-evelyn-hugo-0g2wv",
@@ -1043,7 +759,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckr1vcwfj1lig01crbzogyo8y",
         slug: "stephen-hawkingthe-theory-of-everything-hljmg",
@@ -1052,7 +768,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckr1q0z3u007e01crfvpkn6bc",
         slug: "chetan-bhagat2-states-qkqyg",
@@ -1061,7 +777,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckkqnh5hg78061i6eyet6q96j",
         slug: "we-were-liars-82o0l",
@@ -1071,7 +787,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckmaukl7d72511ijaavn679o5",
         slug: "the-rosie-project-18ohz",
@@ -1081,7 +797,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckjo4tyml197321id148cuuoc0",
         slug: "the-psychology-of-money-81pxa",
@@ -1091,7 +807,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckr1u83gy191z01crzoqgjk2a",
         slug: "the-girl-on-the-train-7d233",
@@ -1101,7 +817,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckend9dzt2824jm0yibqn88an",
         slug: "mark-manson-the-subtle-art-of-not-giving-a-fck-c3rqp",
@@ -1111,7 +827,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckhq877o414180zg1rd5alf3n",
         slug: "the-silent-patient-n3igb",
@@ -1121,7 +837,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckgickd3i143790y8y2j0zr7a3",
         slug: "homo-deus-ny032",
@@ -1131,7 +847,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "cketqjupl21366jm0ycwopwxq6",
         slug: "yuval-noah-harari-sapiens-ohhok",
@@ -1141,7 +857,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckkfh9hbc238671i7l24qafwjv",
         slug: "the-science-of-mom-3q1w9",
@@ -1151,7 +867,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckpoaq8t5584151gmzivxnqzya",
         slug: "parent-hacks-u09jv",
@@ -1161,7 +877,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "clghw9n0o14120030he3tvz7trsy",
         slug: "michel-cohen-the-new-basics-ohy2l",
@@ -1170,7 +886,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckhdjz0dv73331llgl2bu5vkk",
         slug: "talking-to-strangers-e99c4",
@@ -1180,7 +896,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cks9l7uwr2958241k98vreh49jw",
         slug: "son-of-hamas-j7a0h",
@@ -1190,7 +906,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckpptyif91257771givmfkfu4e9",
         slug: "youre-not-listening-dnuer",
@@ -1200,7 +916,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cks9j8sgr2554211k98ix874bk3",
         slug: "how-to-avoid-a-climate-disaster-or0c6",
@@ -1210,7 +926,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckqlenmm42564414uf5fr882l5",
         slug: "until-the-end-of-time-kcmkq",
@@ -1220,7 +936,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckl948ybl277041i4lckp1s7do",
         slug: "the-math-of-life-and-death-wfawr",
@@ -1230,7 +946,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cksa7vvir6716111k987unc40v1",
         slug: "power-sex-suicide-02vv8",
@@ -1240,7 +956,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cku72b0z82625621evd6t2yxdfh",
         slug: "david-jackson-the-rule-5gbqm",
@@ -1250,7 +966,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cklb0drov04181ieatyaj27oj",
         slug: "the-little-book-of-market-wizards-xd4cl",
@@ -1260,7 +976,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cketqj27f20809jm0yiewajzkv",
         slug: "ray-bradbury-schriftsteller-fahrenheit-451-k4qok",
@@ -1270,7 +986,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckpo92qg8131351gmzta3u2a1k",
         slug: "dark-matter-3a2uq",
@@ -1280,7 +996,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cluqm70vc14554460habth0pqc0l",
         slug: "john-van-reenen-ufuk-akcigit-emmanuel-macron-economics-of-creative-destruction-qqvo9",
@@ -1289,7 +1005,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cle6ha8yt11581210iha7zxjajil",
         slug: "emily-jane-on-earth-as-it-is-on-television-g2vgp",
@@ -1298,7 +1014,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cktldrs12167406st7a061qqef0",
         slug: "damon-tweedy-black-man-in-a-white-coat-50ell",
@@ -1308,7 +1024,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cl6pw8jav16487960hdmytexkevh",
         slug: "siddharth-kara-cobalt-red-4p26m",
@@ -1317,7 +1033,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckvdp7k7p57227q08bpydcstu0",
         slug: "frank-close-antimatter-3mdoe",
@@ -1327,7 +1043,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckr1u3w6l17qw01cr78pc5b4n",
         slug: "james-d-watsonthe-double-helix-42n28",
@@ -1337,7 +1053,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "cluqm6r7614489250hab6aud9yo1",
         slug: "michael-d-watkins-six-disciplines-of-strategic-thinking-rpgc4",
@@ -1346,7 +1062,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckr1sug1x0u7001cr4rcqsn2z",
         slug: "lee-childone-shot-enfb9",
@@ -1355,7 +1071,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckr1vomeo1p4j01crorato1vm",
         slug: "tripwire-grcdf",
@@ -1364,7 +1080,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "cl1j5rkap12154720ittmr4vmvg8",
         slug: "mattias-desmet-the-psychology-of-totalitarianism-xh1g0",
@@ -1374,7 +1090,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckjlyrkdu23275107y0b0a677e",
         slug: "the-gene-peoi3",
@@ -1384,7 +1100,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "clmhypaeq2689730hhynx951k8a",
         slug: "eric-jorgenson-the-almanack-of-naval-ravikant-9gnax",
@@ -1393,7 +1109,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckr1upmgg1e9s01cr2yo7s6gj",
         slug: "lee-childthe-midnight-line-8yzjg",
@@ -1403,7 +1119,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckjpzsjzi06590zm4sct5hwqc",
         slug: "the-lovers-dictionary-8og58",
@@ -1413,7 +1129,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckp8i38gk4961121i8pi8z1kmuh",
         slug: "project-hail-mary-y3ycg",
@@ -1423,7 +1139,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckgcfx1lj38200zb83xf6i806",
         slug: "the-immortals-of-meluha-e43g2",
@@ -1433,7 +1149,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckppt8e5m954251giv40tkkavw",
         slug: "numbers-dont-lie-wunqn",
@@ -1443,7 +1159,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckmauizpu25391ija0r096nwa",
         slug: "the-rosie-effect-fj3fy",
@@ -1453,7 +1169,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckpqgdtjq215211givpxim6swo",
         slug: "the-code-breaker-998u9",
@@ -1463,7 +1179,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.Finished,
+      status: "FINISHED",
       book: {
         id: "ckebdq1nj0066bh0y2udulxyt",
         slug: "matthew-walker-why-we-sleep-0vlj1",
@@ -1473,7 +1189,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckrdhbphg099401suhmae1iu9",
         slug: "anne-lamottoperating-instructions-clbrx",
@@ -1482,7 +1198,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckrp991te2566251czql8uzdjwu",
         slug: "home-game-an-accidental-guide-to-fatherhood-lby2w",
@@ -1492,7 +1208,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cksy021dg1090571j8gfwvp68xj",
         slug: "what-to-expect-the-first-year-1ijwo",
@@ -1502,7 +1218,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckrdi3izs0jqy01sugybc244r",
         slug: "heidi-murkoffwhat-to-expect-when-you-re-expecting-gb6ly",
@@ -1511,7 +1227,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "clivycfm72458810hpsd1y6s0pe",
         slug: "walter-isaacson-elon-musk-y6ocw",
@@ -1521,7 +1237,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckkyfiysw98941i99de6mnjnp",
         slug: "the-overstory-h9wd1",
@@ -1531,7 +1247,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "clmbd21fi3344540iih6lnwer3u",
         slug: "adam-grant-hidden-potential-ay82n",
@@ -1541,7 +1257,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckhchz7bo10620z3aco9cwiho",
         slug: "the-black-swan-mg7ze",
@@ -1551,7 +1267,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cl0vsnuoi13140070ig6gu1q0313",
         slug: "matthew-perry-untitled-flatiron-nonfiction-november-2022-9781250866448-2fc7j",
@@ -1561,7 +1277,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckrampk3o1310821jb2t1f2wjri",
         slug: "the-premonition-82iev",
@@ -1571,7 +1287,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cktjnw3861007700a57alh51zb9s",
         slug: "howard-gardner-out-of-print-frames-of-mind-6odxb",
@@ -1581,7 +1297,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "clgh0wdy810280150he3w932vxmq",
         slug: "roy-a-meals-muscle-1kv8k",
@@ -1590,7 +1306,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckng787ci503211i9sduodnlrq",
         slug: "the-enemy-7i78i",
@@ -1600,7 +1316,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckgeacsx1303500zb8b1dlswho",
         slug: "ai-superpowers-k1vjb",
@@ -1610,7 +1326,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "clsl1b19p352480hvkl9z5qtgk",
         slug: "pulak-prasad-what-i-learned-about-investing-from-darwin-qw2fz",
@@ -1620,7 +1336,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cl8kh3ei91158040ieuavbhjamz",
         slug: "j-d-salinger-the-catcher-in-the-rye-fh59d",
@@ -1629,7 +1345,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckpqo04e9260711givto7mjo73",
         slug: "anomaly-i9iig",
@@ -1639,7 +1355,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckhdjxsin45931llge871ugxf",
         slug: "shoe-dog-iraoz",
@@ -1649,7 +1365,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cluqm70bc14552290hab78s8sawt",
         slug: "michael-sheridan-gate-to-china-w17o0",
@@ -1658,7 +1374,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cl6pw1zfz15453570hdmls4126y8",
         slug: "dipo-faloyin-africa-is-not-a-country-ddi3n",
@@ -1667,7 +1383,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cl15jribd2600750hfbyrudyqjz",
         slug: "howard-w-french-born-in-blackness-5uafx",
@@ -1676,7 +1392,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cltbxpufw9773060habj0yakq7q",
         slug: "owen-matthews-overreach-zjhhh",
@@ -1685,7 +1401,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cl66ypfmq11401250ib7ovjzz41v",
         slug: "greta-thunberg-the-climate-book-cuv7q",
@@ -1695,7 +1411,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cl6ud1ozb9317200hi2bsoji2aa",
         slug: "nana-kwame-adjei-brenyah-chain-gang-all-stars-yc482",
@@ -1705,7 +1421,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "clcxd3ibj6644400hbmxv4b9unf",
         slug: "michael-malice-the-white-pill-g297g",
@@ -1714,7 +1430,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckgead5kd308620zb8lddi4mtb",
         slug: "our-final-warning-six-degrees-of-climate-emergency-bwqfn",
@@ -1724,7 +1440,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckrkpdkf7106276183s9sb8j0nf",
         slug: "how-we-learn-nx3q2",
@@ -1734,7 +1450,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cktjxeela9846m97asvmu715n",
         slug: "steven-farmer-strange-chemistry-7mlb1",
@@ -1744,7 +1460,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cket3fer710009jm0yehxy1jo2",
         slug: "tara-westover-educated-zf8vm",
@@ -1754,7 +1470,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cksx994c8812226e8g8ukv6l1c",
         slug: "the-once-and-future-world-zh19n",
@@ -1764,7 +1480,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckr1swvoj0ut201crhce5m4hg",
         slug: "malcolm-gladwelloutliers-k1ovf",
@@ -1773,7 +1489,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckrmla1i241502178fls888i24",
         slug: "crying-in-h-mart-ww645",
@@ -1783,7 +1499,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cla49ryu51113540hd6qukzjs5q",
         slug: "stieg-larsson-the-girl-with-the-dragon-tattoo-uego5",
@@ -1793,7 +1509,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckx9zb07d1925750ivpsf2t8dp7",
         slug: "lydia-kang-nate-pedersen-patient-zero-5abdg",
@@ -1803,7 +1519,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cl7lp93t515199520ijero1a6dai",
         slug: "nick-lane-transformer-the-deep-chemistry-of-life-and-death-8c4cj",
@@ -1812,7 +1528,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "clce296388469970huqwqduw4wu",
         slug: "daron-acemoglu-simon-johnson-power-and-progress-6bccz",
@@ -1822,7 +1538,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckr1q0pcp004m01crnqap3uej",
         slug: "nineteen-eighty-four-3r5eu",
@@ -1831,7 +1547,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cks6iz33z10802914r7cywpf2u7",
         slug: "burnings-h2qdd",
@@ -1841,7 +1557,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cl6pw6x9916153560hdmkh0hzi2z",
         slug: "robert-jensen-wes-jackson-inconvenient-apocalypse-h59rl",
@@ -1850,7 +1566,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "clkqg2rny10954160hhuhap4wo33",
         slug: "robin-dunbar-how-religion-evolved-w9fcy",
@@ -1859,7 +1575,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckv5utpo9598362rd8boirszi0b",
         slug: "philipp-dettmer-immune-4vn22",
@@ -1869,7 +1585,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cl12f6rzl2384480irjwamvefcw",
         slug: "sabine-hossenfelder-existential-physics-2pmgk",
@@ -1879,7 +1595,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckz600v0n640030is0el1n2qnz",
         slug: "ezekiel-j-emanuel-which-country-has-the-worlds-best-health-care-2zeul",
@@ -1889,7 +1605,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cks8y3k7a10311781k98w9pyrh9i",
         slug: "the-new-map-38jd2",
@@ -1899,7 +1615,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckq0rfiz805741ril43v6losq",
         slug: "under-a-white-sky-kx1kf",
@@ -1909,7 +1625,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckptkhjzc3145831i4thiqjncn4",
         slug: "an-elegant-defense-dikeh",
@@ -1919,7 +1635,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cldqjr3wi14022210hhar6e1u0hg",
         slug: "nouriel-roubini-megathreats-n5r9e",
@@ -1928,7 +1644,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckgico0rg168250y8y38l1ubfe",
         slug: "the-etymologicon-r9ewu",
@@ -1938,7 +1654,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cluqm765h14575010habe95m68rd",
         slug: "spencer-klavan-how-to-save-the-west-4gxcg",
@@ -1947,7 +1663,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckpr4mw2x28861gjyfj7tvihg",
         slug: "leonardo-da-vinci-u0w9m",
@@ -1957,7 +1673,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cl5t22i246937080icd479qomfp",
         slug: "siddhartha-mukherjee-song-of-the-cell-jp7iy",
@@ -1967,7 +1683,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckhdjxair26091llg3maog7m8",
         slug: "thinking-fast-and-slow-wwuk4",
@@ -1977,7 +1693,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckp43dijj265061gjssp6gn9v4",
         slug: "think-again-xjd47",
@@ -1987,7 +1703,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckvfdsxnx10307691fsh8dotze4l",
         slug: "gabrielle-zevin-tomorrow-and-tomorrow-and-tomorrow-z6bkc",
@@ -1997,7 +1713,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckiuf846k041010kygj4og8ix",
         slug: "21-lessons-for-the-21st-century-vzjow",
@@ -2007,7 +1723,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cketre3ej30699jm0ydhd11wrq",
         slug: "james-clear-atomic-habits-q5py4",
@@ -2017,7 +1733,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckrp90e9a1912251czqcbrb8rfd",
         slug: "the-drunken-botanist-k88au",
@@ -2027,7 +1743,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckpoav8xa765191gmzswaywll3",
         slug: "interpreter-of-maladies-iican",
@@ -2037,7 +1753,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cko9zs1tm51061i9vq9fkntli",
         slug: "breath-from-salt-gbb26",
@@ -2047,7 +1763,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cl026dws45404740iue4b9bmswi",
         slug: "david-ellis-look-closer-n1jhh",
@@ -2057,7 +1773,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckrorz52c2016431eruyz5as4l4",
         slug: "i-see-satan-fall-like-lightning-wynw2",
@@ -2067,7 +1783,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cl6w9ojak16228340ii22b42hpyu",
         slug: "i-live-here-rla3c",
@@ -2076,7 +1792,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckp7mjs0s55011rl9nnpprh80",
         slug: "the-anthropocene-reviewed-signed-edition-v0hey",
@@ -2086,7 +1802,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckrlmg1wr759751183sdwabwaqj",
         slug: "the-day-the-world-stops-shopping-fkhxf",
@@ -2096,7 +1812,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckrxui4g23618331798dh6x97xu",
         slug: "your-inner-fish-2c9if",
@@ -2106,7 +1822,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckhdifqx002040zkh0lj4ed2n",
         slug: "einstein-dei4n",
@@ -2116,7 +1832,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckps8nn1a56151gjy85ep463w",
         slug: "a-mind-for-numbers-aq3zu",
@@ -2126,7 +1842,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "clc7vty681773710hd0gglainxm",
         slug: "dina-nayeri-who-gets-believed-rqol8",
@@ -2135,7 +1851,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckvln1ohv3359401i7d9gmbe0xx",
         slug: "vaclav-smil-how-the-world-really-works-xw1w3",
@@ -2144,7 +1860,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "ckhnaru1j13040znpp4lq6ayz",
         slug: "moonwalking-with-einstein-wgvud",
@@ -2154,7 +1870,7 @@ export const ReadingStates = {
       },
     },
     {
-      status: ReadingStatus.WantsToRead,
+      status: "WANTS_TO_READ",
       book: {
         id: "cketr9umq30121jm0yz45dfkvx",
         slug: "john-carreyrou-bad-blood-655j0",
@@ -2165,36 +1881,3 @@ export const ReadingStates = {
     },
   ],
 };
-
-const typeDefs = readFileSync("./graphql/schema.graphql", "utf8");
-
-// Resolvers define how to fetch the types defined in your schema.
-// This resolver retrieves books from the "books" array above.
-const resolvers: Resolvers = {
-  Query: {
-    basics: () => RESUME.basics,
-    work: () => RESUME.work,
-    volunteer: () => RESUME.volunteer,
-    education: () => RESUME.education,
-    awards: () => RESUME.awards,
-    publications: () => RESUME.publications,
-    languages: () => RESUME.languages,
-    myReadingStates: () => ReadingStates.myReadingStates,
-  },
-};
-// The ApolloServer constructor requires two parameters: your schema
-// definition and your set of resolvers.
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-});
-
-// Passing an ApolloServer instance to the `startStandaloneServer` function:
-//  1. creates an Express app
-//  2. installs your ApolloServer instance as middleware
-//  3. prepares your app to handle incoming requests
-const { url } = await startStandaloneServer(server, {
-  listen: { port: 4000 },
-});
-
-console.log(`🚀  Server ready at: ${url}`);

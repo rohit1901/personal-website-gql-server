@@ -36,6 +36,14 @@ export type Basics = {
   url?: Maybe<Scalars['String']['output']>;
 };
 
+export type Book = {
+  __typename?: 'Book';
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  slug: Scalars['String']['output'];
+  title: Scalars['String']['output'];
+};
+
 export type Certificate = {
   __typename?: 'Certificate';
   date?: Maybe<Scalars['String']['output']>;
@@ -111,6 +119,7 @@ export type Query = {
   education?: Maybe<Array<Maybe<Education>>>;
   interests?: Maybe<Array<Maybe<Interest>>>;
   languages?: Maybe<Array<Maybe<Language>>>;
+  myReadingStates: Array<ReadingState>;
   projects?: Maybe<Array<Maybe<Project>>>;
   publications?: Maybe<Array<Maybe<Publication>>>;
   references?: Maybe<Array<Maybe<Reference>>>;
@@ -118,6 +127,20 @@ export type Query = {
   volunteer?: Maybe<Array<Maybe<Volunteer>>>;
   work?: Maybe<Array<Maybe<Work>>>;
 };
+
+export type ReadingState = {
+  __typename?: 'ReadingState';
+  book: Book;
+  status: ReadingStatus;
+};
+
+export enum ReadingStatus {
+  Dropped = 'DROPPED',
+  Finished = 'FINISHED',
+  IsReading = 'IS_READING',
+  None = 'NONE',
+  WantsToRead = 'WANTS_TO_READ'
+}
 
 export type Reference = {
   __typename?: 'Reference';
@@ -229,9 +252,11 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = ResolversObject<{
   Award: ResolverTypeWrapper<Award>;
   Basics: ResolverTypeWrapper<Basics>;
+  Book: ResolverTypeWrapper<Book>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Certificate: ResolverTypeWrapper<Certificate>;
   Education: ResolverTypeWrapper<Education>;
+  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Interest: ResolverTypeWrapper<Interest>;
   Language: ResolverTypeWrapper<Language>;
   Location: ResolverTypeWrapper<Location>;
@@ -239,6 +264,8 @@ export type ResolversTypes = ResolversObject<{
   Project: ResolverTypeWrapper<Project>;
   Publication: ResolverTypeWrapper<Publication>;
   Query: ResolverTypeWrapper<{}>;
+  ReadingState: ResolverTypeWrapper<ReadingState>;
+  ReadingStatus: ReadingStatus;
   Reference: ResolverTypeWrapper<Reference>;
   Skill: ResolverTypeWrapper<Skill>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
@@ -250,9 +277,11 @@ export type ResolversTypes = ResolversObject<{
 export type ResolversParentTypes = ResolversObject<{
   Award: Award;
   Basics: Basics;
+  Book: Book;
   Boolean: Scalars['Boolean']['output'];
   Certificate: Certificate;
   Education: Education;
+  ID: Scalars['ID']['output'];
   Interest: Interest;
   Language: Language;
   Location: Location;
@@ -260,6 +289,7 @@ export type ResolversParentTypes = ResolversObject<{
   Project: Project;
   Publication: Publication;
   Query: {};
+  ReadingState: ReadingState;
   Reference: Reference;
   Skill: Skill;
   String: Scalars['String']['output'];
@@ -285,6 +315,14 @@ export type BasicsResolvers<ContextType = any, ParentType extends ResolversParen
   profiles?: Resolver<Maybe<Array<Maybe<ResolversTypes['Profile']>>>, ParentType, ContextType>;
   summary?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type BookResolvers<ContextType = any, ParentType extends ResolversParentTypes['Book'] = ResolversParentTypes['Book']> = ResolversObject<{
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -362,12 +400,19 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   education?: Resolver<Maybe<Array<Maybe<ResolversTypes['Education']>>>, ParentType, ContextType>;
   interests?: Resolver<Maybe<Array<Maybe<ResolversTypes['Interest']>>>, ParentType, ContextType>;
   languages?: Resolver<Maybe<Array<Maybe<ResolversTypes['Language']>>>, ParentType, ContextType>;
+  myReadingStates?: Resolver<Array<ResolversTypes['ReadingState']>, ParentType, ContextType>;
   projects?: Resolver<Maybe<Array<Maybe<ResolversTypes['Project']>>>, ParentType, ContextType>;
   publications?: Resolver<Maybe<Array<Maybe<ResolversTypes['Publication']>>>, ParentType, ContextType>;
   references?: Resolver<Maybe<Array<Maybe<ResolversTypes['Reference']>>>, ParentType, ContextType>;
   skills?: Resolver<Maybe<Array<Maybe<ResolversTypes['Skill']>>>, ParentType, ContextType>;
   volunteer?: Resolver<Maybe<Array<Maybe<ResolversTypes['Volunteer']>>>, ParentType, ContextType>;
   work?: Resolver<Maybe<Array<Maybe<ResolversTypes['Work']>>>, ParentType, ContextType>;
+}>;
+
+export type ReadingStateResolvers<ContextType = any, ParentType extends ResolversParentTypes['ReadingState'] = ResolversParentTypes['ReadingState']> = ResolversObject<{
+  book?: Resolver<ResolversTypes['Book'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['ReadingStatus'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type ReferenceResolvers<ContextType = any, ParentType extends ResolversParentTypes['Reference'] = ResolversParentTypes['Reference']> = ResolversObject<{
@@ -409,6 +454,7 @@ export type WorkResolvers<ContextType = any, ParentType extends ResolversParentT
 export type Resolvers<ContextType = any> = ResolversObject<{
   Award?: AwardResolvers<ContextType>;
   Basics?: BasicsResolvers<ContextType>;
+  Book?: BookResolvers<ContextType>;
   Certificate?: CertificateResolvers<ContextType>;
   Education?: EducationResolvers<ContextType>;
   Interest?: InterestResolvers<ContextType>;
@@ -418,6 +464,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Project?: ProjectResolvers<ContextType>;
   Publication?: PublicationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  ReadingState?: ReadingStateResolvers<ContextType>;
   Reference?: ReferenceResolvers<ContextType>;
   Skill?: SkillResolvers<ContextType>;
   Volunteer?: VolunteerResolvers<ContextType>;

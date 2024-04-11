@@ -6,7 +6,10 @@
   "scripts": {
     "compile": "tsc",
     "start": "npm run compile && node ./dist/src/index.js",
-    "generate": "graphql-codegen"
+    "generate": "graphql-codegen",
+    "dev": "run-p dev:*",
+    "dev:tsc": "tsc --watch --preserveWatchOutput",
+    "dev:node": "node --watch ./dist/src/index.js"
   },
   "repository": {
     "type": "git",

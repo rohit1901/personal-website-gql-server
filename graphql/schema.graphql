@@ -108,6 +108,26 @@ type Project {
     url: String
 }
 
+type ReadingState {
+    status: ReadingStatus!
+    book: Book!
+}
+
+enum ReadingStatus {
+    WANTS_TO_READ
+    IS_READING
+    FINISHED
+    DROPPED
+    NONE
+}
+
+type Book {
+    id: ID!
+    slug: String!
+    title: String!
+    description: String
+}
+
 type Query {
     basics: Basics
     work: [Work]
@@ -121,4 +141,5 @@ type Query {
     interests: [Interest]
     references: [Reference]
     projects: [Project]
+    myReadingStates: [ReadingState!]!
 }
