@@ -6,6 +6,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -85,6 +86,17 @@ export type Location = {
   region?: Maybe<Scalars['String']['output']>;
 };
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  login: UserLoginResponse;
+};
+
+
+export type MutationLoginArgs = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
 export type Profile = {
   __typename?: 'Profile';
   network?: Maybe<Scalars['String']['output']>;
@@ -153,6 +165,23 @@ export type Skill = {
   keywords?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   level?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+};
+
+export type UserLoginResponse = {
+  __typename?: 'UserLoginResponse';
+  email: Scalars['String']['output'];
+  languages: Array<Scalars['String']['output']>;
+  profile: UserProfile;
+  token: Scalars['String']['output'];
+};
+
+export type UserProfile = {
+  __typename?: 'UserProfile';
+  bio: Scalars['String']['output'];
+  handle: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  image: Scalars['String']['output'];
+  name: Scalars['String']['output'];
 };
 
 export type Volunteer = {
@@ -260,6 +289,7 @@ export type ResolversTypes = ResolversObject<{
   Interest: ResolverTypeWrapper<Interest>;
   Language: ResolverTypeWrapper<Language>;
   Location: ResolverTypeWrapper<Location>;
+  Mutation: ResolverTypeWrapper<{}>;
   Profile: ResolverTypeWrapper<Profile>;
   Project: ResolverTypeWrapper<Project>;
   Publication: ResolverTypeWrapper<Publication>;
@@ -269,6 +299,8 @@ export type ResolversTypes = ResolversObject<{
   Reference: ResolverTypeWrapper<Reference>;
   Skill: ResolverTypeWrapper<Skill>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
+  UserLoginResponse: ResolverTypeWrapper<UserLoginResponse>;
+  UserProfile: ResolverTypeWrapper<UserProfile>;
   Volunteer: ResolverTypeWrapper<Volunteer>;
   Work: ResolverTypeWrapper<Work>;
 }>;
@@ -285,6 +317,7 @@ export type ResolversParentTypes = ResolversObject<{
   Interest: Interest;
   Language: Language;
   Location: Location;
+  Mutation: {};
   Profile: Profile;
   Project: Project;
   Publication: Publication;
@@ -293,6 +326,8 @@ export type ResolversParentTypes = ResolversObject<{
   Reference: Reference;
   Skill: Skill;
   String: Scalars['String']['output'];
+  UserLoginResponse: UserLoginResponse;
+  UserProfile: UserProfile;
   Volunteer: Volunteer;
   Work: Work;
 }>;
@@ -367,6 +402,10 @@ export type LocationResolvers<ContextType = any, ParentType extends ResolversPar
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
+  login?: Resolver<ResolversTypes['UserLoginResponse'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
+}>;
+
 export type ProfileResolvers<ContextType = any, ParentType extends ResolversParentTypes['Profile'] = ResolversParentTypes['Profile']> = ResolversObject<{
   network?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -428,6 +467,23 @@ export type SkillResolvers<ContextType = any, ParentType extends ResolversParent
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type UserLoginResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserLoginResponse'] = ResolversParentTypes['UserLoginResponse']> = ResolversObject<{
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  languages?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  profile?: Resolver<ResolversTypes['UserProfile'], ParentType, ContextType>;
+  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type UserProfileResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserProfile'] = ResolversParentTypes['UserProfile']> = ResolversObject<{
+  bio?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  handle?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  image?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type VolunteerResolvers<ContextType = any, ParentType extends ResolversParentTypes['Volunteer'] = ResolversParentTypes['Volunteer']> = ResolversObject<{
   endDate?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   highlights?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
@@ -460,6 +516,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Interest?: InterestResolvers<ContextType>;
   Language?: LanguageResolvers<ContextType>;
   Location?: LocationResolvers<ContextType>;
+  Mutation?: MutationResolvers<ContextType>;
   Profile?: ProfileResolvers<ContextType>;
   Project?: ProjectResolvers<ContextType>;
   Publication?: PublicationResolvers<ContextType>;
@@ -467,6 +524,8 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   ReadingState?: ReadingStateResolvers<ContextType>;
   Reference?: ReferenceResolvers<ContextType>;
   Skill?: SkillResolvers<ContextType>;
+  UserLoginResponse?: UserLoginResponseResolvers<ContextType>;
+  UserProfile?: UserProfileResolvers<ContextType>;
   Volunteer?: VolunteerResolvers<ContextType>;
   Work?: WorkResolvers<ContextType>;
 }>;

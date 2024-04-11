@@ -128,6 +128,25 @@ type Book {
     description: String
 }
 
+type UserLoginResponse {
+    token: String!
+    email: String!
+    languages: [String!]!
+    profile: UserProfile!
+}
+
+type UserProfile {
+    id: ID!
+    handle: String!
+    name: String!
+    bio: String!
+    image: String!
+}
+
+type Mutation {
+    login(email: String!, password: String!): UserLoginResponse!
+}
+
 type Query {
     basics: Basics
     work: [Work]

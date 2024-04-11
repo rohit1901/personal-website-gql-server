@@ -2166,6 +2166,22 @@ export const ReadingStates = {
   ],
 };
 
+const UserLogin = {
+  login: {
+    token: crypto.randomUUID(),
+    email: "rohit.khanduri@proton.me",
+    languages: ["en"],
+    profile: {
+      id: "cluqm5sdm6447490hwegbmbip3f",
+      handle: "johnnydrama",
+      name: "Rohit Khanduri",
+      bio: "I’m a Mathematician interested in AI/ML, Software Architecture, Java, Python, and all things JS! I love to read, write, and code. In my free time, I write articles and review books that I've read, work on side projects, and contribute to open-source.",
+      image:
+        "https://assets.literal.club/user/avatar/cluqm66wj00sj0i36cb4o23ug.jpg",
+    },
+  },
+};
+
 const typeDefs = readFileSync("./graphql/schema.graphql", "utf8");
 
 // Resolvers define how to fetch the types defined in your schema.
@@ -2180,6 +2196,9 @@ const resolvers: Resolvers = {
     publications: () => RESUME.publications,
     languages: () => RESUME.languages,
     myReadingStates: () => ReadingStates.myReadingStates,
+  },
+  Mutation: {
+    login: () => UserLogin.login,
   },
 };
 // The ApolloServer constructor requires two parameters: your schema
