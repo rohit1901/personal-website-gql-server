@@ -215,6 +215,7 @@ export const RESUME = {
       studyType: "Master",
       startDate: "10-2017",
       endDate: "09-2019",
+      url: "https://www.hs-mittweida.de/",
     },
     {
       institution: "Gautam Buddh Technical University",
@@ -223,6 +224,7 @@ export const RESUME = {
       studyType: "Bachelor",
       startDate: "08-2008",
       endDate: "06-2012",
+      url: "https://aktu.ac.in/",
     },
   ],
   awards: [
