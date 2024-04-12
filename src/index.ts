@@ -209,7 +209,7 @@ export const RESUME = {
   ],
   education: [
     {
-      institution: "Hochsch ule Mittweida",
+      institution: "Hochschule Mittweida",
       location: "Mittweida, Germany",
       area: "Applied Mathematics for Network and Data Science",
       studyType: "Master",
