@@ -2,6 +2,10 @@
   "name": "personal-website-graphql-server",
   "version": "1.0.0",
   "description": "Node.js + Express.js + TypeScript server for my personal website.",
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.2.0"
+  },
   "main": "./src/app.ts",
   "author": "Rohit Khanduri",
   "repository": "https://github.com/rohit1901/personal-website-gql-server",
