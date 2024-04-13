@@ -11,6 +11,8 @@ import {readFileSync} from "node:fs";
 import {ApolloServer} from "@apollo/server";
 import {resolvers} from "./resolvers";
 import {expressMiddleware} from "@apollo/server/express4";
+import {verify} from "@/middleware/auth-middleware";
+import {errorResponse} from "@/middleware/error-middleware";
 
 // Setup .env variables for app usage
 dotenv.config();
@@ -41,7 +43,7 @@ app.use(morgan("dev"));
 app.use(
   rateLimit({
     windowMs: RATE_TIME_LIMIT * 60 * 1000,
-    max: RATE_REQUEST_LIMIT,
+    limit: RATE_REQUEST_LIMIT,
   }),
 );
 
@@ -53,14 +55,12 @@ app.use(helmet());
 
 // Secure against param pollutions
 app.use(hpp());
-
 // Note you must call `start()` on the `ApolloServer`
 // instance before passing the instance to `expressMiddleware`
 server.start().then(() => {
-    // Setup routing
-    app.use("/graphql", expressMiddleware(server));
-    app.listen(PORT, () => {
-        console.log(`🚀 Server is listening on: ${PORT}`);
-    });
+    // Setup routing & middleware
+    // reject any request that does not have a valid authorization header
+    app.use("/graphql", verify, expressMiddleware(server), errorResponse);
+    app.listen(PORT, () => console.log(`🚀 Server is listening on: ${PORT}`));
 });
 

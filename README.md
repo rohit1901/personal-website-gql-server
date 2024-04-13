@@ -1,9 +1,9 @@
-# node-express-typescript
-Basic starter project for any project using Node.js + Express.js + TypeScript. Personally, I'd recommend for small to medium projects, as the imagine with a bigger project, you would need extra folders or structure. However, this template should be malleable enough for a good starting template for most personal projects.
+# Personal Website GQL Server
+## Inspired by [Node.js + Express.js + TypeScript Template](https://github.com/takuyadev/node-express-typescript)
+This server is built with Node.js, Express.js, and TypeScript. It is a GraphQL server that is used for my personal website.
 
 ## Features
-Most of the useful features are for easier configuration, although there are some other packages setup to make it easier for you to start your project without worrying about installing them.
-
+- GraphQL Server (Apollo Server)
 - TypeScript Support
 - Test-ready with Jest configured with TypeScript
 - Async Handling with error handling if error is thrown
@@ -14,25 +14,20 @@ Most of the useful features are for easier configuration, although there are som
 - Security middlewares setup
 - Environment variables configured on load
 
-# Setup
-
-## Environment Variables
-
-1. Copy ```.env.example```, and rename to ```.env```
-2. Configure newly copied ```.env``` file 
-
 ## Development
-> This project was setup using Node.js v18.5. Please use specified version for best experience.
+> This project was setup using Node.js v20.11. Please use specified version for best experience.
 
 1. Use this project as a template
 2. Install dependencies with ```npm install```
-3. Start developoment server with ```npm run dev```
+3. Run ```npm run generate```
+4. Start development server with ```npm run dev```
 
 ## Production
 Production build is compiled first into JavaScript, built on the ```./dist``` folder, and can be ran after compilation.
 
-1. Run ```npm run build```
-2. Run ```npm run start```
+1. Run ```npm run generate```
+2. Run ```npm run build```
+3. Run ```npm run start```
 
 # Project
 Every development files are located within the ```./src``` folder. 
@@ -43,10 +38,19 @@ Every development files are located within the ```./src``` folder.
 │   └── db.ts
 ├── controllers
 │   └── user-controller.ts
+│   └── index.ts
+├── data
+│   └── books.ts
+│   └── index.ts
+├── graphql
+│   └── resolvers-types.ts
+│   └── schema.graphql
 ├── middleware
 │   ├── async-middleware.ts
 │   ├── auth-middleware.ts
 │   └── error-middleware.ts
+├── resolvers
+│   └── index.ts
 ├── routes
 │   └── user-route.ts
 ├── __tests__
@@ -94,11 +98,4 @@ Using ApiError or ApiSuccess allows for consistent responses across all routes; 
  res.status(200).json(new ApiSuccess<User[]>(user, "Success!"));
 ```
 
-## Adding extra path aliases
-If you add extra folders to this template and would like to use them with aliases, then go through following:
-
-1. Go into ```tsconfig.json```
-2. Add extra paths inside of ```{ paths: ... }``` (for tsconfig-paths)
-3. Go into ```package.json```
-4. Add extra paths inside of ```{_moduleAliases: ... }``` (for production build)
 

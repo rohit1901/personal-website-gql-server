@@ -1,5 +1,5 @@
 {
-  "name": "rk-graphql-server",
+  "name": "personal-website-graphql-server",
   "version": "1.0.0",
   "description": "Node.js + Express.js + TypeScript server for my personal website.",
   "main": "./src/app.ts",
