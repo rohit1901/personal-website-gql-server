@@ -20,7 +20,7 @@
   "scripts": {
     "status": "tsc --p tsconfig.json --listFiles",
     "test": "jest",
-    "start": "npm run generate && npm run build && node -r module-alias/register ./dist/app.js",
+    "start": "npm run build && node -r module-alias/register ./dist/app.js",
     "build": "tsc -p ./tsconfig.prod.json && cp ./src/graphql/schema.graphql ./dist/graphql/schema.graphql",
     "generate": "graphql-codegen",
     "dev": "nodemon --watch 'src/**/*.ts' --exec ts-node -r tsconfig-paths/register src/app.ts"
