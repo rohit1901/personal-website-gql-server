@@ -1,4 +1,5 @@
 import {getMongoDb} from "../config/db";
+import {ReadingStates} from "../data/books";
 
 export const getBasics = async () => {
     const db = await getMongoDb();
@@ -36,7 +37,5 @@ export const getLanguages = async () => {
     return data?.languages;
 };
 export const getMyReadingStates = async () => {
-    const db = await getMongoDb();
-    const data = await db?.collection("reading_states").findOne();
-    return data?.myReadingStates;
+    return ReadingStates.myReadingStates
 };

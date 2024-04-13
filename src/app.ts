@@ -6,23 +6,21 @@ import helmet from "helmet";
 import hpp from "hpp";
 import morgan from "morgan";
 import rateLimit from "express-rate-limit";
-
-// Setup .env variables for app usage
-dotenv.config();
-
 // Import routes from the ./routes
-import user from "@/routes/user-route";
 import {readFileSync} from "node:fs";
 import {ApolloServer} from "@apollo/server";
 import {resolvers} from "./resolvers";
 import {expressMiddleware} from "@apollo/server/express4";
+
+// Setup .env variables for app usage
+dotenv.config();
 
 // Setup constant variables
 const PORT = process.env.PORT || 5000;
 const RATE_TIME_LIMIT = Number(process.env.RATE_TIME_LIMIT) || 15;
 const RATE_REQUEST_LIMIT = Number(process.env.RATE_REQUEST_LIMIT) || 100;
 
-const typeDefs = readFileSync(__dirname + "/graphql/schema.graphql", "utf8");
+const typeDefs = readFileSync(`${__dirname}/graphql/schema.graphql`, "utf8");
 
 // Init express app
 const app = express();
@@ -60,7 +58,7 @@ app.use(hpp());
 // instance before passing the instance to `expressMiddleware`
 server.start().then(() => {
     // Setup routing
-    app.use('/graphql', expressMiddleware(server));
+    app.use("/graphql", expressMiddleware(server));
     app.listen(PORT, () => {
         console.log(`🚀 Server is listening on: ${PORT}`);
     });

@@ -1,3 +1,5 @@
+import {ReadingStatus} from "../graphql/resolvers-types";
+
 `
 Query
 curl -X POST -H "Content-Type: application/json"
@@ -5,11 +7,6 @@ curl -X POST -H "Content-Type: application/json"
 --data '{ "query": "query { myReadingStates { status book { id slug title description } } }" }' https://literal.club/graphql/
 `;
 
-enum ReadingStatus {
-  Finished = "FINISHED",
-  IsReading = "IS_READING",
-  WantsToRead = "WANTS_TO_READ",
-}
 
 export const ReadingStates = {
   myReadingStates: [

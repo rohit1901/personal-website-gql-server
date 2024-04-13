@@ -1,6 +1,6 @@
-import {ReadingStates, UserLogin} from "../data/books";
+import {UserLogin} from "../data/books";
 import {Resolvers} from "../graphql/resolvers-types";
-import {getAwards, getBasics, getEducation, getLanguages, getPublications, getVolunteer, getWork} from "@/controllers/index";
+import {getAwards, getBasics, getEducation, getLanguages, getMyReadingStates, getPublications, getVolunteer, getWork} from "@/controllers/index";
 
 export const resolvers: Resolvers = {
     Query: {
@@ -11,7 +11,7 @@ export const resolvers: Resolvers = {
         awards: async () => await getAwards(),
         publications: async () => await getPublications(),
         languages: async () => await getLanguages(),
-        myReadingStates: () => ReadingStates.myReadingStates,
+        myReadingStates: async () => await getMyReadingStates(),
     },
     Mutation: {
         login: () => UserLogin.login,
