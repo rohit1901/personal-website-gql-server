@@ -1,0 +1,13 @@
+mutation getReadingStates($token: String!) {
+    getReadingStates(token: $token) {
+        book {
+            title
+            description
+            cover
+            authors {
+                name
+            }
+        }
+        status
+    }
+}

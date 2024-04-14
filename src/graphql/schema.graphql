@@ -1,3 +1,5 @@
+scalar GQLDate
+
 type Basics {
     name: String
     label: String
@@ -129,7 +131,7 @@ type Book {
     title: String!
     description: String
     cover: String!
-    authors: [Author!]!
+    authors: [Author!]
 }
 
 type UserLoginResponse {
@@ -147,8 +149,17 @@ type UserProfile {
     image: String!
 }
 
+
+type AppTokenResponse {
+    token: String!
+    createdOn: GQLDate!
+    expiresOn: GQLDate!
+}
+
 type Mutation {
     login(email: String!, password: String!): UserLoginResponse!
+    getToken(appSecret: String!): AppTokenResponse
+    getReadingStates(token: String!): [ReadingState!]!
 }
 
 type Query {
@@ -164,5 +175,4 @@ type Query {
     interests: [Interest]
     references: [Reference]
     projects: [Project]
-    myReadingStates: [ReadingState!]!
 }

@@ -98,4 +98,58 @@ Using ApiError or ApiSuccess allows for consistent responses across all routes; 
  res.status(200).json(new ApiSuccess<User[]>(user, "Success!"));
 ```
 
+# Endpoints
+
+## Flow
+
+The Client should first call the getToken mutation to get a token with the app secret in the variables and should then call the getReadingStates
+mutation with the token from the getToken mutation in the variables to get the reading states of the user.
+NOTE: The token should also be in the Authorization header as a Bearer token.
+
+## getToken
+
+```js
+/*
+variables
+this is a secret that is passed to the server to get a token from the Literal Club API.
+NOTE: This is the secret shared between the server and the client comsuming this GraphQL API.
+{
+    "appSecret": "some secret"
+}
+*/
+gql`mutation getToken($appSecret: String!) {
+    getToken(appSecret: $appSecret) {
+        token
+        createdOn
+        expiresOn
+    }
+}`
+```
+
+## getReadingStates
+
+```js
+/*
+variables
+this is a token that is passed to the server to get the reading states of the user. 
+NOTE: This token should be the token returned from the getToken mutation
+{
+    "token": "some token"
+}
+*/
+gql`mutation getReadingStates($token: String!) {
+    getReadingStates(token: $token) {
+        book {
+            title
+            description
+            cover
+            authors {
+                name
+            }
+        }
+        status
+    }
+}`
+```
+
 

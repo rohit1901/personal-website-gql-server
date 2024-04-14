@@ -1,4 +1,5 @@
-import { GraphQLResolveInfo } from 'graphql';
+import {GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig} from 'graphql';
+
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -14,6 +15,14 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  GQLDate: { input: any; output: any; }
+};
+
+export type AppTokenResponse = {
+  __typename?: 'AppTokenResponse';
+  createdOn: Scalars['GQLDate']['output'];
+  expiresOn: Scalars['GQLDate']['output'];
+  token: Scalars['String']['output'];
 };
 
 export type Author = {
@@ -44,7 +53,7 @@ export type Basics = {
 
 export type Book = {
   __typename?: 'Book';
-  authors: Array<Author>;
+  authors?: Maybe<Array<Author>>;
   cover: Scalars['String']['output'];
   description?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
@@ -95,7 +104,19 @@ export type Location = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  getReadingStates: Array<ReadingState>;
+  getToken?: Maybe<AppTokenResponse>;
   login: UserLoginResponse;
+};
+
+
+export type MutationGetReadingStatesArgs = {
+  token: Scalars['String']['input'];
+};
+
+
+export type MutationGetTokenArgs = {
+  appSecret: Scalars['String']['input'];
 };
 
 
@@ -138,7 +159,6 @@ export type Query = {
   education?: Maybe<Array<Maybe<Education>>>;
   interests?: Maybe<Array<Maybe<Interest>>>;
   languages?: Maybe<Array<Maybe<Language>>>;
-  myReadingStates: Array<ReadingState>;
   projects?: Maybe<Array<Maybe<Project>>>;
   publications?: Maybe<Array<Maybe<Publication>>>;
   references?: Maybe<Array<Maybe<Reference>>>;
@@ -286,6 +306,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
+  AppTokenResponse: ResolverTypeWrapper<AppTokenResponse>;
   Author: ResolverTypeWrapper<Author>;
   Award: ResolverTypeWrapper<Award>;
   Basics: ResolverTypeWrapper<Basics>;
@@ -293,6 +314,7 @@ export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Certificate: ResolverTypeWrapper<Certificate>;
   Education: ResolverTypeWrapper<Education>;
+  GQLDate: ResolverTypeWrapper<Scalars['GQLDate']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Interest: ResolverTypeWrapper<Interest>;
   Language: ResolverTypeWrapper<Language>;
@@ -315,6 +337,7 @@ export type ResolversTypes = ResolversObject<{
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
+  AppTokenResponse: AppTokenResponse;
   Author: Author;
   Award: Award;
   Basics: Basics;
@@ -322,6 +345,7 @@ export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean']['output'];
   Certificate: Certificate;
   Education: Education;
+  GQLDate: Scalars['GQLDate']['output'];
   ID: Scalars['ID']['output'];
   Interest: Interest;
   Language: Language;
@@ -339,6 +363,13 @@ export type ResolversParentTypes = ResolversObject<{
   UserProfile: UserProfile;
   Volunteer: Volunteer;
   Work: Work;
+}>;
+
+export type AppTokenResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['AppTokenResponse'] = ResolversParentTypes['AppTokenResponse']> = ResolversObject<{
+  createdOn?: Resolver<ResolversTypes['GQLDate'], ParentType, ContextType>;
+  expiresOn?: Resolver<ResolversTypes['GQLDate'], ParentType, ContextType>;
+  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type AuthorResolvers<ContextType = any, ParentType extends ResolversParentTypes['Author'] = ResolversParentTypes['Author']> = ResolversObject<{
@@ -368,7 +399,7 @@ export type BasicsResolvers<ContextType = any, ParentType extends ResolversParen
 }>;
 
 export type BookResolvers<ContextType = any, ParentType extends ResolversParentTypes['Book'] = ResolversParentTypes['Book']> = ResolversObject<{
-  authors?: Resolver<Array<ResolversTypes['Author']>, ParentType, ContextType>;
+  authors?: Resolver<Maybe<Array<ResolversTypes['Author']>>, ParentType, ContextType>;
   cover?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -397,6 +428,10 @@ export type EducationResolvers<ContextType = any, ParentType extends ResolversPa
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export interface GqlDateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['GQLDate'], any> {
+  name: 'GQLDate';
+}
+
 export type InterestResolvers<ContextType = any, ParentType extends ResolversParentTypes['Interest'] = ResolversParentTypes['Interest']> = ResolversObject<{
   keywords?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -419,6 +454,8 @@ export type LocationResolvers<ContextType = any, ParentType extends ResolversPar
 }>;
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
+  getReadingStates?: Resolver<Array<ResolversTypes['ReadingState']>, ParentType, ContextType, RequireFields<MutationGetReadingStatesArgs, 'token'>>;
+  getToken?: Resolver<Maybe<ResolversTypes['AppTokenResponse']>, ParentType, ContextType, RequireFields<MutationGetTokenArgs, 'appSecret'>>;
   login?: Resolver<ResolversTypes['UserLoginResponse'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
 }>;
 
@@ -455,7 +492,6 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   education?: Resolver<Maybe<Array<Maybe<ResolversTypes['Education']>>>, ParentType, ContextType>;
   interests?: Resolver<Maybe<Array<Maybe<ResolversTypes['Interest']>>>, ParentType, ContextType>;
   languages?: Resolver<Maybe<Array<Maybe<ResolversTypes['Language']>>>, ParentType, ContextType>;
-  myReadingStates?: Resolver<Array<ResolversTypes['ReadingState']>, ParentType, ContextType>;
   projects?: Resolver<Maybe<Array<Maybe<ResolversTypes['Project']>>>, ParentType, ContextType>;
   publications?: Resolver<Maybe<Array<Maybe<ResolversTypes['Publication']>>>, ParentType, ContextType>;
   references?: Resolver<Maybe<Array<Maybe<ResolversTypes['Reference']>>>, ParentType, ContextType>;
@@ -524,12 +560,14 @@ export type WorkResolvers<ContextType = any, ParentType extends ResolversParentT
 }>;
 
 export type Resolvers<ContextType = any> = ResolversObject<{
+  AppTokenResponse?: AppTokenResponseResolvers<ContextType>;
   Author?: AuthorResolvers<ContextType>;
   Award?: AwardResolvers<ContextType>;
   Basics?: BasicsResolvers<ContextType>;
   Book?: BookResolvers<ContextType>;
   Certificate?: CertificateResolvers<ContextType>;
   Education?: EducationResolvers<ContextType>;
+  GQLDate?: GraphQLScalarType;
   Interest?: InterestResolvers<ContextType>;
   Language?: LanguageResolvers<ContextType>;
   Location?: LocationResolvers<ContextType>;

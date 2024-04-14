@@ -1,3 +1,5 @@
+import {LiteralSecrets} from "@/types/types/types.common";
+
 export const RESUME = {
   basics: {
     name: "Rohit Khanduri",
@@ -276,4 +278,10 @@ export const RESUME = {
       lastModified: "2021-08-06",
     },
   ],
+};
+export const AUTH_TOKEN: LiteralSecrets = {
+  token: "authToken",
+  createdOn: new Date(),
+  // after six months
+  expiresOn: new Date(new Date().setMonth(new Date().getMonth() + 6)),
 };
