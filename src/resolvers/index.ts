@@ -11,17 +11,18 @@ import {
     getVolunteer,
     getWork
 } from "@/controllers/index";
-import {LiteralReadingState, LiteralSecrets} from "@/types/types/types.common";
+import {LiteralSecrets} from "@/types/types/types.common";
+import {AppContext} from "@/types/interfaces/interfaces.common";
 
 export const resolvers: Resolvers = {
     Query: {
-        basics: async () => await getBasics(),
-        work: async () => await getWork(),
-        volunteer: async () => await getVolunteer(),
-        education: async () => await getEducation(),
-        awards: async () => await getAwards(),
-        publications: async () => await getPublications(),
-        languages: async () => await getLanguages(),
+        basics: async (parent: any, args: any, context: AppContext) => await getBasics(context),
+        work: async (parent: any, args: any, context: AppContext) => await getWork(context),
+        volunteer: async (parent: any, args: any, context: AppContext) => await getVolunteer(context),
+        education: async (parent: any, args: any, context: AppContext) => await getEducation(context),
+        awards: async (parent: any, args: any, context: AppContext) => await getAwards(context),
+        publications: async (parent: any, args: any, context: AppContext) => await getPublications(context),
+        languages: async (parent: any, args: any, context: AppContext) => await getLanguages(context),
     },
     Mutation: {
         login: (parent: any, args: { email: string, password: string }) => UserLogin.login,

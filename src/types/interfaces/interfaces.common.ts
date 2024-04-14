@@ -10,3 +10,9 @@ export interface ApiError extends Error {
 export interface User {
   name: string;
 }
+
+export interface AppContext {
+  // You can optionally create a TS interface to set up types
+  // for your contextValue
+  authorized?: boolean;
+}

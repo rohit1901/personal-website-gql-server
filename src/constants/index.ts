@@ -7,6 +7,7 @@ export const DEFAULT_LITERAL_TOKEN: LiteralSecrets = {
     expiresOn: new Date()
 };
 export const IS_DEV = "development" === process.env.NODE_ENV;
+export const LITERAL_CLUB_URL = "https://literal.club/graphql/";
 export const LITERAL_CLUB_LOGIN_MUTATION = gql`
     mutation LiteralClubLogin($email: String!, $password: String!) {
         login(email: $email, password: $password) {

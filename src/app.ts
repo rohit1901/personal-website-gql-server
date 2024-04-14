@@ -13,6 +13,7 @@ import {resolvers} from "./resolvers";
 import {expressMiddleware} from "@apollo/server/express4";
 import {verify} from "@/middleware/auth-middleware";
 import {errorResponse} from "@/middleware/error-middleware";
+import {AppContext} from "@/types/interfaces/interfaces.common";
 
 // Setup .env variables for app usage
 dotenv.config();
@@ -26,8 +27,7 @@ const typeDefs = readFileSync(`${__dirname}/graphql/schema.graphql`, "utf8");
 
 // Init express app
 const app = express();
-
-const server = new ApolloServer({
+const server = new ApolloServer<AppContext>({
     typeDefs,
     resolvers,
 });
@@ -60,7 +60,9 @@ app.use(hpp());
 server.start().then(() => {
     // Setup routing & middleware
     // reject any request that does not have a valid authorization header
-    app.use("/graphql", verify, expressMiddleware(server), errorResponse);
+    app.use("/graphql", expressMiddleware(server, {
+        context: async ({req, res}) => await verify(req, res),
+    }), errorResponse);
     app.listen(PORT, () => console.log(`🚀 Server is listening on: ${PORT}`));
 });
 

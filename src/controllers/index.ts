@@ -1,39 +1,62 @@
 import {getMongoDb} from "../config/db";
 import {Auth, LiteralReadingState, LiteralSecrets} from "@/types/types/types.common";
-import {DEFAULT_LITERAL_TOKEN, LITERAL_CLUB_LOGIN_MUTATION, LITERAL_CLUB_READING_STATES} from "../constants";
+import {DEFAULT_LITERAL_TOKEN, LITERAL_CLUB_LOGIN_MUTATION, LITERAL_CLUB_READING_STATES, LITERAL_CLUB_URL} from "../constants";
 import {getGraphQLQueryStr} from "@/utils/index";
+import {AppContext} from "@/types/interfaces/interfaces.common";
 
-export const getBasics = async () => {
+export const getBasics = async (context: AppContext) => {
+    console.log(context);
+    if (!context.authorized) {
+        return null;
+    }
     const db = await getMongoDb();
     const data = await db?.collection("resume").findOne();
     return data?.basics;
 };
-export const getWork = async () => {
+export const getWork = async (context: AppContext) => {
+    if (!context.authorized) {
+        return null;
+    }
     const db = await getMongoDb();
     const data = await db?.collection("resume").findOne();
     return data?.work;
 };
-export const getVolunteer = async () => {
+export const getVolunteer = async (context: AppContext) => {
+    if (!context.authorized) {
+        return null;
+    }
     const db = await getMongoDb();
     const data = await db?.collection("resume").findOne();
     return data?.volunteer;
 };
-export const getEducation = async () => {
+export const getEducation = async (context: AppContext) => {
+    if (!context.authorized) {
+        return null;
+    }
     const db = await getMongoDb();
     const data = await db?.collection("resume").findOne();
     return data?.education;
 };
-export const getAwards = async () => {
+export const getAwards = async (context: AppContext) => {
+    if (!context.authorized) {
+        return null;
+    }
     const db = await getMongoDb();
     const data = await db?.collection("resume").findOne();
     return data?.awards;
 };
-export const getPublications = async () => {
+export const getPublications = async (context: AppContext) => {
+    if (!context.authorized) {
+        return null;
+    }
     const db = await getMongoDb();
     const data = await db?.collection("resume").findOne();
     return data?.publications;
 };
-export const getLanguages = async () => {
+export const getLanguages = async (context: AppContext) => {
+    if (!context.authorized) {
+        return null;
+    }
     const db = await getMongoDb();
     const data = await db?.collection("resume").findOne();
     return data?.languages;
@@ -60,7 +83,7 @@ export const getToken = async (appSecret: string): Promise<LiteralSecrets> => {
     const db = await getMongoDb();
     const data = await db?.collection<Auth>("auth").findOne();
     if (data?.app.secret === appSecret) {
-        const isTokenExpired = data?.literal.token && new Date() > data.literal.expiresOn;
+        const isTokenExpired = data?.literal?.token && new Date() > data?.literal?.expiresOn;
         if (!isTokenExpired) {
             return data?.literal;
         }
@@ -68,7 +91,7 @@ export const getToken = async (appSecret: string): Promise<LiteralSecrets> => {
             email: process.env.LITERAL_CLUB_EMAIL,
             password: process.env.LITERAL_CLUB_PASSWORD
         };
-        const literalLoginResponse = await fetch("https://literal.club/graphql/", {
+        const literalLoginResponse = await fetch(LITERAL_CLUB_URL, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: getGraphQLQueryStr(LITERAL_CLUB_LOGIN_MUTATION, variables)
@@ -96,7 +119,7 @@ export const getMyReadingStates = async (token?: string): Promise<LiteralReading
     if (!isTokenValid) {
         return [] as LiteralReadingState[];
     }
-    const readingStates = await fetch("https://literal.club/graphql/", {
+    const readingStates = await fetch(LITERAL_CLUB_URL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
