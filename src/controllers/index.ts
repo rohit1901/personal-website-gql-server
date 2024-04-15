@@ -1,62 +1,70 @@
 import {getMongoDb} from "../config/db";
 import {Auth, LiteralReadingState, LiteralSecrets} from "@/types/types/types.common";
-import {DEFAULT_LITERAL_TOKEN, LITERAL_CLUB_LOGIN_MUTATION, LITERAL_CLUB_READING_STATES, LITERAL_CLUB_URL} from "../constants";
+import {isDev, LITERAL_CLUB_LOGIN_MUTATION, LITERAL_CLUB_READING_STATES, LITERAL_CLUB_URL} from "../constants";
 import {getGraphQLQueryStr} from "@/utils/index";
 import {AppContext} from "@/types/interfaces/interfaces.common";
+import {DEFAULT_LITERAL_TOKEN, RESUME} from "../data";
+import {ReadingStates} from "../data/books";
 
 export const getBasics = async (context: AppContext) => {
-    console.log(context);
     if (!context.authorized) {
-        return null;
+        throw new Error("Unauthorized");
     }
+    if (isDev()) return RESUME.basics;
     const db = await getMongoDb();
     const data = await db?.collection("resume").findOne();
     return data?.basics;
 };
 export const getWork = async (context: AppContext) => {
     if (!context.authorized) {
-        return null;
+        throw new Error("Unauthorized");
     }
+    if (isDev()) return RESUME.work;
     const db = await getMongoDb();
     const data = await db?.collection("resume").findOne();
     return data?.work;
 };
 export const getVolunteer = async (context: AppContext) => {
     if (!context.authorized) {
-        return null;
+        throw new Error("Unauthorized");
     }
+    if (isDev()) return RESUME.volunteer;
     const db = await getMongoDb();
     const data = await db?.collection("resume").findOne();
     return data?.volunteer;
 };
 export const getEducation = async (context: AppContext) => {
     if (!context.authorized) {
-        return null;
+        throw new Error("Unauthorized");
     }
+    if (isDev()) return RESUME.education;
     const db = await getMongoDb();
     const data = await db?.collection("resume").findOne();
     return data?.education;
 };
 export const getAwards = async (context: AppContext) => {
     if (!context.authorized) {
-        return null;
+        throw new Error("Unauthorized");
     }
+    if (isDev()) return RESUME.awards;
     const db = await getMongoDb();
     const data = await db?.collection("resume").findOne();
     return data?.awards;
 };
 export const getPublications = async (context: AppContext) => {
     if (!context.authorized) {
-        return null;
+        throw new Error("Unauthorized");
     }
+    if (isDev()) return RESUME.publications;
     const db = await getMongoDb();
     const data = await db?.collection("resume").findOne();
     return data?.publications;
 };
 export const getLanguages = async (context: AppContext) => {
     if (!context.authorized) {
-        return null;
+        throw new Error("Unauthorized");
     }
+    if (isDev()) return RESUME.languages;
     const db = await getMongoDb();
     const data = await db?.collection("resume").findOne();
     return data?.languages;
@@ -67,6 +75,7 @@ export const getLanguages = async (context: AppContext) => {
  * @returns {Promise<boolean>} - The result
  */
 export const verifyLiteralToken = async (token?: string) => {
+    if (isDev()) return true;
     const db = await getMongoDb();
     const data = await db?.collection<Auth>("auth").findOne();
     return data?.literal.token === token;
@@ -80,6 +89,7 @@ export const verifyLiteralToken = async (token?: string) => {
  * @returns {Promise<LiteralSecrets>} - The token
  */
 export const getToken = async (appSecret: string): Promise<LiteralSecrets> => {
+    if (isDev()) return DEFAULT_LITERAL_TOKEN;
     const db = await getMongoDb();
     const data = await db?.collection<Auth>("auth").findOne();
     if (data?.app.secret === appSecret) {
@@ -115,6 +125,9 @@ export const getToken = async (appSecret: string): Promise<LiteralSecrets> => {
  * @returns {Promise<LiteralReadingState[]>} - The reading states
  */
 export const getMyReadingStates = async (token?: string): Promise<LiteralReadingState[]> => {
+    if (isDev()) {
+        return ReadingStates.myReadingStates;
+    }
     const isTokenValid = await verifyLiteralToken(token);
     if (!isTokenValid) {
         return [] as LiteralReadingState[];

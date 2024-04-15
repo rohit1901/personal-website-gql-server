@@ -13,6 +13,7 @@ import {
 } from "@/controllers/index";
 import {LiteralSecrets} from "@/types/types/types.common";
 import {AppContext} from "@/types/interfaces/interfaces.common";
+import {getGitHubRepos} from "@/controllers/github-controller";
 
 export const resolvers: Resolvers = {
     Query: {
@@ -23,6 +24,7 @@ export const resolvers: Resolvers = {
         awards: async (parent: any, args: any, context: AppContext) => await getAwards(context),
         publications: async (parent: any, args: any, context: AppContext) => await getPublications(context),
         languages: async (parent: any, args: any, context: AppContext) => await getLanguages(context),
+        gitHubRepos: async (parent: any, args: any, context: AppContext) => await getGitHubRepos(context),
     },
     Mutation: {
         login: (parent: any, args: { email: string, password: string }) => UserLogin.login,

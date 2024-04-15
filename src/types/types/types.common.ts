@@ -20,7 +20,7 @@ export type LiteralBook = {
     id: string,
     slug: string,
     title: string,
-    description: string
+    description?: string | null
     cover: string
     authors?: BookAuthor[]
 }

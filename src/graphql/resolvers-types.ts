@@ -81,6 +81,25 @@ export type Education = {
   url?: Maybe<Scalars['String']['output']>;
 };
 
+export type GitHubOwner = {
+  __typename?: 'GitHubOwner';
+  avatar_url?: Maybe<Scalars['String']['output']>;
+  html_url?: Maybe<Scalars['String']['output']>;
+  login?: Maybe<Scalars['String']['output']>;
+};
+
+export type GitHubRepo = {
+  __typename?: 'GitHubRepo';
+  avatar_url?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  html_url?: Maybe<Scalars['String']['output']>;
+  icon?: Maybe<Scalars['String']['output']>;
+  image?: Maybe<Scalars['String']['output']>;
+  login?: Maybe<Scalars['String']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+  url?: Maybe<Scalars['String']['output']>;
+};
+
 export type Interest = {
   __typename?: 'Interest';
   keywords?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
@@ -157,6 +176,7 @@ export type Query = {
   basics?: Maybe<Basics>;
   certificates?: Maybe<Array<Maybe<Certificate>>>;
   education?: Maybe<Array<Maybe<Education>>>;
+  gitHubRepos?: Maybe<Array<Maybe<GitHubRepo>>>;
   interests?: Maybe<Array<Maybe<Interest>>>;
   languages?: Maybe<Array<Maybe<Language>>>;
   projects?: Maybe<Array<Maybe<Project>>>;
@@ -315,6 +335,8 @@ export type ResolversTypes = ResolversObject<{
   Certificate: ResolverTypeWrapper<Certificate>;
   Education: ResolverTypeWrapper<Education>;
   GQLDate: ResolverTypeWrapper<Scalars['GQLDate']['output']>;
+  GitHubOwner: ResolverTypeWrapper<GitHubOwner>;
+  GitHubRepo: ResolverTypeWrapper<GitHubRepo>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Interest: ResolverTypeWrapper<Interest>;
   Language: ResolverTypeWrapper<Language>;
@@ -346,6 +368,8 @@ export type ResolversParentTypes = ResolversObject<{
   Certificate: Certificate;
   Education: Education;
   GQLDate: Scalars['GQLDate']['output'];
+  GitHubOwner: GitHubOwner;
+  GitHubRepo: GitHubRepo;
   ID: Scalars['ID']['output'];
   Interest: Interest;
   Language: Language;
@@ -432,6 +456,25 @@ export interface GqlDateScalarConfig extends GraphQLScalarTypeConfig<ResolversTy
   name: 'GQLDate';
 }
 
+export type GitHubOwnerResolvers<ContextType = any, ParentType extends ResolversParentTypes['GitHubOwner'] = ResolversParentTypes['GitHubOwner']> = ResolversObject<{
+  avatar_url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  html_url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  login?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type GitHubRepoResolvers<ContextType = any, ParentType extends ResolversParentTypes['GitHubRepo'] = ResolversParentTypes['GitHubRepo']> = ResolversObject<{
+  avatar_url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  html_url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  icon?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  login?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type InterestResolvers<ContextType = any, ParentType extends ResolversParentTypes['Interest'] = ResolversParentTypes['Interest']> = ResolversObject<{
   keywords?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -490,6 +533,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   basics?: Resolver<Maybe<ResolversTypes['Basics']>, ParentType, ContextType>;
   certificates?: Resolver<Maybe<Array<Maybe<ResolversTypes['Certificate']>>>, ParentType, ContextType>;
   education?: Resolver<Maybe<Array<Maybe<ResolversTypes['Education']>>>, ParentType, ContextType>;
+  gitHubRepos?: Resolver<Maybe<Array<Maybe<ResolversTypes['GitHubRepo']>>>, ParentType, ContextType>;
   interests?: Resolver<Maybe<Array<Maybe<ResolversTypes['Interest']>>>, ParentType, ContextType>;
   languages?: Resolver<Maybe<Array<Maybe<ResolversTypes['Language']>>>, ParentType, ContextType>;
   projects?: Resolver<Maybe<Array<Maybe<ResolversTypes['Project']>>>, ParentType, ContextType>;
@@ -568,6 +612,8 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Certificate?: CertificateResolvers<ContextType>;
   Education?: EducationResolvers<ContextType>;
   GQLDate?: GraphQLScalarType;
+  GitHubOwner?: GitHubOwnerResolvers<ContextType>;
+  GitHubRepo?: GitHubRepoResolvers<ContextType>;
   Interest?: InterestResolvers<ContextType>;
   Language?: LanguageResolvers<ContextType>;
   Location?: LocationResolvers<ContextType>;

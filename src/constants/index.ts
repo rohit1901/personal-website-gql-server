@@ -1,12 +1,6 @@
-import {LiteralSecrets} from "@/types/types/types.common";
 import gql from "gql-tag";
 
-export const DEFAULT_LITERAL_TOKEN: LiteralSecrets = {
-    token: "",
-    createdOn: new Date(),
-    expiresOn: new Date()
-};
-export const IS_DEV = "development" === process.env.NODE_ENV;
+export const isDev = () => process.env.NODE_ENV === "development";
 export const LITERAL_CLUB_URL = "https://literal.club/graphql/";
 export const LITERAL_CLUB_LOGIN_MUTATION = gql`
     mutation LiteralClubLogin($email: String!, $password: String!) {
@@ -39,3 +33,23 @@ export const LITERAL_CLUB_READING_STATES = gql`
         }
     }
 `;
+export const GITHUB_REPO_QUERY = gql`
+    query GetGitHubRepo {
+        gitHubRepos {
+            description
+            icon
+            image
+            title
+            url
+            login
+            avatar_url
+            html_url
+        }
+        gitHubOwner {
+            login
+            avatar_url
+            html_url
+        }
+    }`;
+
+export const GITHUB_PUBLIC_REPOS_URL = "https://api.github.com/users/rohit1901/repos";

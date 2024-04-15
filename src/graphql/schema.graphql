@@ -156,6 +156,23 @@ type AppTokenResponse {
     expiresOn: GQLDate!
 }
 
+type GitHubRepo {
+    description: String
+    icon: String
+    image: String
+    title: String
+    url: String
+    login: String
+    avatar_url: String
+    html_url: String
+}
+
+type GitHubOwner {
+    login: String
+    avatar_url: String
+    html_url: String
+}
+
 type Mutation {
     login(email: String!, password: String!): UserLoginResponse!
     getToken(appSecret: String!): AppTokenResponse
@@ -175,4 +192,5 @@ type Query {
     interests: [Interest]
     references: [Reference]
     projects: [Project]
+    gitHubRepos: [GitHubRepo]
 }
