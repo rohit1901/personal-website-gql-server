@@ -2,6 +2,7 @@ schema:
   - http://localhost:4002/graphql:
       headers:
         Authorization: Bearer ${AUTH_TOKEN}
+        x-literal-token: ${X_LITERAL_TOKEN}
 documents: '**/*.graphql'
 extensions:
   endpoints:

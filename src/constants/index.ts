@@ -18,7 +18,7 @@ export const LITERAL_CLUB_LOGIN_MUTATION = gql`
         }
     }
 `;
-export const LITERAL_CLUB_READING_STATES = gql`
+export const LITERAL_CLUB_READING_STATES_QUERY = gql`
     query {
         myReadingStates {
             book {
@@ -33,23 +33,5 @@ export const LITERAL_CLUB_READING_STATES = gql`
         }
     }
 `;
-export const GITHUB_REPO_QUERY = gql`
-    query GetGitHubRepo {
-        gitHubRepos {
-            description
-            icon
-            image
-            title
-            url
-            login
-            avatar_url
-            html_url
-        }
-        gitHubOwner {
-            login
-            avatar_url
-            html_url
-        }
-    }`;
 
 export const GITHUB_PUBLIC_REPOS_URL = "https://api.github.com/users/rohit1901/repos";

@@ -12,7 +12,7 @@ export interface User {
 }
 
 export interface AppContext {
-  // You can optionally create a TS interface to set up types
-  // for your contextValue
   authorized?: boolean;
+    xLiteralToken?: string;
+    isTokenExpired?: boolean;
 }

@@ -1,4 +1,3 @@
-// Import packages onto app
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -9,11 +8,12 @@ import rateLimit from "express-rate-limit";
 // Import routes from the ./routes
 import {readFileSync} from "node:fs";
 import {ApolloServer} from "@apollo/server";
-import {resolvers} from "./resolvers";
-import {expressMiddleware} from "@apollo/server/express4";
+import {devResolvers, resolvers} from "./resolvers";
+import {expressMiddleware, ExpressMiddlewareOptions} from "@apollo/server/express4";
 import {verify} from "@/middleware/auth-middleware";
 import {errorResponse} from "@/middleware/error-middleware";
 import {AppContext} from "@/types/interfaces/interfaces.common";
+import {isDev} from "./constants";
 
 // Setup .env variables for app usage
 dotenv.config();
@@ -25,11 +25,26 @@ const RATE_REQUEST_LIMIT = Number(process.env.RATE_REQUEST_LIMIT) || 100;
 
 const typeDefs = readFileSync(`${__dirname}/graphql/schema.graphql`, "utf8");
 
+const getExpressMiddlewareOptions = (): ExpressMiddlewareOptions<AppContext> => {
+    if (isDev()) return {
+        context: async ({req}) => {
+            return {
+                authorized: true,
+                xLiteralToken: req.headers["x-literal-token"] as string,
+                isTokenExpired: false,
+            }
+        }
+    }
+    return {
+        context: async ({req, res}) => await verify(req, res),
+    }
+}
+
 // Init express app
 const app = express();
 const server = new ApolloServer<AppContext>({
     typeDefs,
-    resolvers,
+    resolvers: isDev() ? devResolvers : resolvers,
 });
 
 // Body parser
@@ -60,9 +75,7 @@ app.use(hpp());
 server.start().then(() => {
     // Setup routing & middleware
     // reject any request that does not have a valid authorization header
-    app.use("/graphql", expressMiddleware(server, {
-        context: async ({req, res}) => await verify(req, res),
-    }), errorResponse);
-    app.listen(PORT, () => console.log(`🚀 Server is listening on: ${PORT}`));
+    app.use("/graphql", expressMiddleware(server, getExpressMiddlewareOptions()), errorResponse);
+    app.listen(PORT, () => console.info(`🚀 Server is listening on: ${PORT}`));
 });
 

@@ -1,14 +1,10 @@
 import {AppContext} from "@/types/interfaces/interfaces.common";
-import {GITHUB_PUBLIC_REPOS_URL, isDev} from "../constants";
+import {GITHUB_PUBLIC_REPOS_URL} from "../constants";
 import {GitHubRepo} from "../graphql/resolvers-types";
 import {transformGitHubData} from "@/utils/index";
 import fetchMeta from "@/utils/fetch-meta-tags";
-import {GITHUB_REPOS} from "../data";
 
 export const getGitHubRawData = async () => {
-    if (isDev()) {
-        return GITHUB_REPOS;
-    }
     const raw = await fetch(GITHUB_PUBLIC_REPOS_URL);
     return await raw.json();
 }

@@ -123,19 +123,7 @@ export type Location = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  getReadingStates: Array<ReadingState>;
-  getToken?: Maybe<AppTokenResponse>;
   login: UserLoginResponse;
-};
-
-
-export type MutationGetReadingStatesArgs = {
-  token: Scalars['String']['input'];
-};
-
-
-export type MutationGetTokenArgs = {
-  appSecret: Scalars['String']['input'];
 };
 
 
@@ -176,6 +164,8 @@ export type Query = {
   basics?: Maybe<Basics>;
   certificates?: Maybe<Array<Maybe<Certificate>>>;
   education?: Maybe<Array<Maybe<Education>>>;
+    getLiteralToken?: Maybe<AppTokenResponse>;
+    getReadingStates: Array<ReadingState>;
   gitHubRepos?: Maybe<Array<Maybe<GitHubRepo>>>;
   interests?: Maybe<Array<Maybe<Interest>>>;
   languages?: Maybe<Array<Maybe<Language>>>;
@@ -497,8 +487,6 @@ export type LocationResolvers<ContextType = any, ParentType extends ResolversPar
 }>;
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-  getReadingStates?: Resolver<Array<ResolversTypes['ReadingState']>, ParentType, ContextType, RequireFields<MutationGetReadingStatesArgs, 'token'>>;
-  getToken?: Resolver<Maybe<ResolversTypes['AppTokenResponse']>, ParentType, ContextType, RequireFields<MutationGetTokenArgs, 'appSecret'>>;
   login?: Resolver<ResolversTypes['UserLoginResponse'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
 }>;
 
@@ -533,6 +521,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   basics?: Resolver<Maybe<ResolversTypes['Basics']>, ParentType, ContextType>;
   certificates?: Resolver<Maybe<Array<Maybe<ResolversTypes['Certificate']>>>, ParentType, ContextType>;
   education?: Resolver<Maybe<Array<Maybe<ResolversTypes['Education']>>>, ParentType, ContextType>;
+    getLiteralToken?: Resolver<Maybe<ResolversTypes['AppTokenResponse']>, ParentType, ContextType>;
+    getReadingStates?: Resolver<Array<ResolversTypes['ReadingState']>, ParentType, ContextType>;
   gitHubRepos?: Resolver<Maybe<Array<Maybe<ResolversTypes['GitHubRepo']>>>, ParentType, ContextType>;
   interests?: Resolver<Maybe<Array<Maybe<ResolversTypes['Interest']>>>, ParentType, ContextType>;
   languages?: Resolver<Maybe<Array<Maybe<ResolversTypes['Language']>>>, ParentType, ContextType>;
