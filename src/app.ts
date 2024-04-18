@@ -14,7 +14,7 @@ import {verify} from "@/middleware/auth-middleware";
 import {errorResponse} from "@/middleware/error-middleware";
 import {AppContext} from "@/types/interfaces/interfaces.common";
 import {isDev} from "./constants";
-
+// TODO: test expired literal token flow
 // Setup .env variables for app usage
 dotenv.config();
 

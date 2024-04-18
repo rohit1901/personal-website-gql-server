@@ -1,24 +1,27 @@
 type Element = {
-    getAttribute: (arg0: any) => any
+    getAttribute: (name: string) => string | null;
     [key: string]: any
 }
+
+type Rule = [string, (e: Element) => string | null];
+
 const attr = (element: { getAttribute: (arg0: any) => any }, attribute: string) => element.getAttribute(attribute);
 
 export type MetadataRuleSet = {
     title: {
-        rules: [string, (e: Element) => any][]
+        rules: Rule[];
     },
     description: {
-        rules: [string, (e: Element) => any][]
+        rules: Rule[];
     },
     icon: {
-        rules: [string, (e: Element) => any][]
-        defaultValue: string
-        absolute: boolean
+        rules: Rule[];
+        defaultValue: string;
+        absolute: boolean;
     },
     image: {
-        rules: [string, (e: Element) => any][]
-        absolute: boolean
+        rules: Rule[];
+        absolute: boolean;
     }
     [key: string]: any;
 }
