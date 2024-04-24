@@ -7,15 +7,15 @@ export const RESUME = {
     image: "/portfolio/profile.pic.svg",
     email: "rohit.khanduri@hotmail.com",
     url: "https://www.rohit.khanduri.de",
-    summary: `With over a decade of successful tenure in software development,
-        I bring a robust background as a distinguished Software Architect specializing in Microservice Architecture.
-        My expertise spans the entire software development lifecycle, enriched further by extensive experience in agile methodologies, particularly Scrum.
-        Notably, my international project involvements across Germany, France, India, Japan
-        and beyond have honed my prowess in leading diverse software teams, showcasing my ability to collaborate seamlessly across borders.
-        I aim to contribute my expertise in fostering innovation, leveraging technology stacks,
-        and driving the evolution of the tech landscape as a Software Architect.
-        My academic foundation includes a Master of Science in Applied Mathematics for Network and Data Science
-        from Hochschule Mittweida, Germany, and a Bachelor of Technology in Computer Science from Gautam Buddh Technical University in India.`,
+    summary: `Hi there! 😊 
+    As a seasoned software architect with over a decade of experience in software development, 
+    I bring a wealth of expertise in crafting innovative solutions that bridge the gap between technical and creative aspects of software design. 
+    With a strong foundation in mathematics and a proven track record of successful project delivery, 
+    I am well-versed in agile methodologies and have honed my skills in leading diverse software teams across international borders. 
+    My passion for problem-solving and creativity has allowed me to excel in my career, 
+    and I am always eager to take on new challenges and collaborate with like-minded professionals. 
+    When I'm not working on the latest software solution, you can find me reading, doodling math problems or moving my body. 
+    Let's connect and explore how we can work together to drive the evolution of the tech landscape! 💻🎸`,
     location: {
       address: "Frankfurt am Main, Germany",
       postalCode: "60326",
