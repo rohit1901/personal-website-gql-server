@@ -60,6 +60,14 @@ export const getLanguages = async (context: AppContext) => {
     const data = await db?.collection("resume").findOne();
     return data?.languages;
 };
+export const getCertificates = async (context: AppContext) => {
+    if (!context.authorized) {
+        throw new Error("Unauthorized");
+    }
+    const db = await getMongoDb();
+    const data = await db?.collection("resume").findOne();
+    return data?.certificates;
+}
 /**
  * Verify literal token. This function checks if the token is valid by comparing it to the one stored in the database.
  * @param token {string} - The token

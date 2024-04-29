@@ -32,7 +32,7 @@ const makeUrlAbsolute = (url: string, path: string): string =>
     new URL(path, new URL(url).origin).toString();
 
 const fetchMetadata = async (dom: HTMLElement, url: string): Promise<Metadata> => {
-    const metadata: Metadata = { url };
+    const metadata: Metadata = {url};
     for (const [prop, ruleSet] of Object.entries<MetadataRuleSet>(metadataRuleSets)) {
         const rule = ruleSet.rules.find(([selector]: [string]) => dom.querySelector(selector));
         if (rule) {

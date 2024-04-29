@@ -3,6 +3,7 @@ import {GitHubRepo, Resolvers} from "../graphql/resolvers-types";
 import {
     getAwards,
     getBasics,
+    getCertificates,
     getEducation,
     getLanguages,
     getMyReadingStates,
@@ -26,6 +27,7 @@ export const resolvers: Resolvers = {
         awards: async (parent: any, args: any, context: AppContext) => await getAwards(context),
         publications: async (parent: any, args: any, context: AppContext) => await getPublications(context),
         languages: async (parent: any, args: any, context: AppContext) => await getLanguages(context),
+        certificates: async (parent: any, args: any, context: AppContext) => await getCertificates(context),
         gitHubRepos: async (parent: any, args: any, context: AppContext) => await getGitHubRepos(context),
         getReadingStates: async (parent: any, args: any, context: AppContext) => await getMyReadingStates(context),
         getLiteralToken: async (parent: any, args: any, context: AppContext) => await getToken(context),
@@ -43,6 +45,7 @@ export const devResolvers: Resolvers = {
         awards: async (parent: any, args: any, context: AppContext) => RESUME.awards,
         publications: async (parent: any, args: any, context: AppContext) => RESUME.publications,
         languages: async (parent: any, args: any, context: AppContext) => RESUME.languages,
+        certificates: async (parent: any, args: any, context: AppContext) => RESUME.certificates,
         gitHubRepos: async (parent: any, args: any, context: AppContext) => {
             const urls = GITHUB_REPOS.map((repo: any) => repo.html_url);
             const rawMeta: Promise<GitHubRepo>[] = urls.map(async (url: string) => fetchMeta(url));

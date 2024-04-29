@@ -1,8 +1,8 @@
 import express from "express";
 
 // Import controllers from
-import { errorUser, getUsers } from "@/controllers/user-controller";
-import { verify } from "@/middleware/auth-middleware";
+import {errorUser, getUsers} from "@/controllers/user-controller";
+import {verify} from "@/middleware/auth-middleware";
 
 // Setup router
 const router = express.Router();
