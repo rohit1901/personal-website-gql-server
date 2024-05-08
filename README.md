@@ -54,7 +54,7 @@ Every development files are located within the ```./src``` folder.
 ├── routes
 │   └── user-route.ts
 ├── __tests__
-│   └── example.test.ts
+│   └── app.test.ts
 ├── types
 │   ├── enums
 │   │   └── enums.common.ts

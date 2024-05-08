@@ -35,6 +35,8 @@ type Work {
     endDate: String
     summary: String
     highlights: [String]
+    location: String
+    description: String
 }
 
 type Volunteer {

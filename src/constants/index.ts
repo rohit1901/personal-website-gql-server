@@ -1,6 +1,7 @@
 import gql from "gql-tag";
 
 export const isDev = () => process.env.NODE_ENV === "development";
+export const isProd = () => process.env.NODE_ENV === "production";
 export const LITERAL_CLUB_URL = "https://literal.club/graphql/";
 export const LITERAL_CLUB_LOGIN_MUTATION = gql`
     mutation LiteralClubLogin($email: String!, $password: String!) {
