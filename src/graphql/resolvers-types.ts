@@ -165,6 +165,7 @@ export type Query = {
   education?: Maybe<Array<Maybe<Education>>>;
   getLiteralToken?: Maybe<AppTokenResponse>;
   getReadingStates: Array<ReadingState>;
+  getSubstackRawData?: Maybe<Array<Maybe<SubstackItem>>>;
   gitHubRepos?: Maybe<Array<Maybe<GitHubRepo>>>;
   interests?: Maybe<Array<Maybe<Interest>>>;
   languages?: Maybe<Array<Maybe<Language>>>;
@@ -201,6 +202,15 @@ export type Skill = {
   keywords?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   level?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+};
+
+export type SubstackItem = {
+  __typename?: 'SubstackItem';
+  content: Scalars['String']['output'];
+  description: Scalars['String']['output'];
+  link: Scalars['String']['output'];
+  pubDate: Scalars['String']['output'];
+  title: Scalars['String']['output'];
 };
 
 export type UserLoginResponse = {
@@ -342,6 +352,7 @@ export type ResolversTypes = ResolversObject<{
   Reference: ResolverTypeWrapper<Reference>;
   Skill: ResolverTypeWrapper<Skill>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
+  SubstackItem: ResolverTypeWrapper<SubstackItem>;
   UserLoginResponse: ResolverTypeWrapper<UserLoginResponse>;
   UserProfile: ResolverTypeWrapper<UserProfile>;
   Volunteer: ResolverTypeWrapper<Volunteer>;
@@ -374,6 +385,7 @@ export type ResolversParentTypes = ResolversObject<{
   Reference: Reference;
   Skill: Skill;
   String: Scalars['String']['output'];
+  SubstackItem: SubstackItem;
   UserLoginResponse: UserLoginResponse;
   UserProfile: UserProfile;
   Volunteer: Volunteer;
@@ -524,6 +536,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   education?: Resolver<Maybe<Array<Maybe<ResolversTypes['Education']>>>, ParentType, ContextType>;
   getLiteralToken?: Resolver<Maybe<ResolversTypes['AppTokenResponse']>, ParentType, ContextType>;
   getReadingStates?: Resolver<Array<ResolversTypes['ReadingState']>, ParentType, ContextType>;
+  getSubstackRawData?: Resolver<Maybe<Array<Maybe<ResolversTypes['SubstackItem']>>>, ParentType, ContextType>;
   gitHubRepos?: Resolver<Maybe<Array<Maybe<ResolversTypes['GitHubRepo']>>>, ParentType, ContextType>;
   interests?: Resolver<Maybe<Array<Maybe<ResolversTypes['Interest']>>>, ParentType, ContextType>;
   languages?: Resolver<Maybe<Array<Maybe<ResolversTypes['Language']>>>, ParentType, ContextType>;
@@ -551,6 +564,15 @@ export type SkillResolvers<ContextType = any, ParentType extends ResolversParent
   keywords?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
   level?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type SubstackItemResolvers<ContextType = any, ParentType extends ResolversParentTypes['SubstackItem'] = ResolversParentTypes['SubstackItem']> = ResolversObject<{
+  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  link?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  pubDate?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -618,6 +640,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   ReadingState?: ReadingStateResolvers<ContextType>;
   Reference?: ReferenceResolvers<ContextType>;
   Skill?: SkillResolvers<ContextType>;
+  SubstackItem?: SubstackItemResolvers<ContextType>;
   UserLoginResponse?: UserLoginResponseResolvers<ContextType>;
   UserProfile?: UserProfileResolvers<ContextType>;
   Volunteer?: VolunteerResolvers<ContextType>;

@@ -1,34 +1,37 @@
-import request from "supertest";
-import {createApolloServer} from "../app";
-import {ApolloServer} from "@apollo/server";
-import {Express} from "express";
-import {RESUME} from "../data";
+import { ApolloServer } from "@apollo/server";
 import dotenv from "dotenv";
+import { Express } from "express";
+import request from "supertest";
+import { createApolloServer } from "../app";
+import { RESUME } from "../data";
 let apolloServer: ApolloServer;
 let expressServer: Express;
-dotenv.config({ path: '../../.env.test' });
+dotenv.config({ path: "../../.env.test" });
 beforeAll((done) => {
-    createApolloServer().then(result => {
-        apolloServer = result.apolloServer;
-        expressServer = result.expressServer;
-    }).catch(err => {
-        console.error(err);
-    }).finally(() => {
-        done();
+  createApolloServer()
+    .then((result) => {
+      apolloServer = result.apolloServer;
+      expressServer = result.expressServer;
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+    .finally(() => {
+      done();
     });
 });
 afterAll((done) => {
-    apolloServer.stop().then(() => {
-        done();
-    });
+  apolloServer.stop().then(() => {
+    done();
+  });
 });
 describe("Setup tests", () => {
-    it("should setup the Apollo Server", () => {
-        expect(apolloServer).toBeDefined();
-    });
-    it("should setup the Express Server", () => {
-        expect(expressServer).toBeDefined();
-    });
+  it("should setup the Apollo Server", () => {
+    expect(apolloServer).toBeDefined();
+  });
+  it("should setup the Express Server", () => {
+    expect(expressServer).toBeDefined();
+  });
 });
 /*describe("Middleware", () => {
     it("should throw UnauthorizedError", (done) => {
@@ -53,9 +56,12 @@ describe("Setup tests", () => {
     });
 });*/
 describe("Resolvers", () => {
-    it("should return all certificates", (done) => {
-        request(expressServer).post("/graphql").set("Authorization", "Bearer some_token").send({
-            query: `
+  it("should return all certificates", (done) => {
+    request(expressServer)
+      .post("/graphql")
+      .set("Authorization", "Bearer some_token")
+      .send({
+        query: `
             query AllCertificates {
                 certificates {
                     name
@@ -64,20 +70,27 @@ describe("Resolvers", () => {
                 }
             }
         `,
-        }).then(response => {
-            expect(response.status).toBe(200);
-            expect(response.body.data.certificates).toEqual(RESUME.certificates.map(c => ({
-                name: c.name,
-                date: c.date,
-                issuer: c.issuer,
-            })));
-        }).finally(() => {
-            done();
-        });
-    });
-    it("should return all basics", (done) => {
-        request(expressServer).post("/graphql").set("Authorization", "Bearer some token").send({
-            query: `
+      })
+      .then((response) => {
+        expect(response.status).toBe(200);
+        expect(response.body.data.certificates).toEqual(
+          RESUME.certificates.map((c) => ({
+            name: c.name,
+            date: c.date,
+            issuer: c.issuer,
+          })),
+        );
+      })
+      .finally(() => {
+        done();
+      });
+  });
+  it("should return all basics", (done) => {
+    request(expressServer)
+      .post("/graphql")
+      .set("Authorization", "Bearer some token")
+      .send({
+        query: `
             query AllBasics {
                 basics  {
                     name
@@ -100,16 +113,21 @@ describe("Resolvers", () => {
                 }
             }
         `,
-        }).then(response => {
-            expect(response.status).toBe(200);
-            expect(response.body.data.basics).toEqual(RESUME.basics);
-        }).finally(() => {
-            done();
-        });
-    });
-    it("should return all work", (done) => {
-        request(expressServer).post("/graphql").set("Authorization", "Bearer some token").send({
-            query: `
+      })
+      .then((response) => {
+        expect(response.status).toBe(200);
+        expect(response.body.data.basics).toEqual(RESUME.basics);
+      })
+      .finally(() => {
+        done();
+      });
+  });
+  it("should return all work", (done) => {
+    request(expressServer)
+      .post("/graphql")
+      .set("Authorization", "Bearer some token")
+      .send({
+        query: `
             query AllWorkExperience {
                 work {
                     name
@@ -123,25 +141,33 @@ describe("Resolvers", () => {
                 }
             }
         `,
-        }).then(response => {
-            expect(response.status).toBe(200);
-            expect(response.body.data.work).toEqual(RESUME.work.map(w => ({
-                name: w.name,
-                position: w.position,
-                url: w.url,
-                startDate: w.startDate,
-                endDate: w.endDate ?? null,
-                summary: w.summary,
-                highlights: w.highlights,
-                image: w.image,
-            })));
-        }).catch(console.error).finally(() => {
-            done();
-        });
-    });
-    it("should return all education", (done) => {
-        request(expressServer).post("/graphql").set("Authorization", "Bearer some token").send({
-            query: `
+      })
+      .then((response) => {
+        expect(response.status).toBe(200);
+        expect(response.body.data.work).toEqual(
+          RESUME.work.map((w) => ({
+            name: w.name,
+            position: w.position,
+            url: w.url,
+            startDate: w.startDate,
+            endDate: w.endDate ?? null,
+            summary: w.summary,
+            highlights: w.highlights,
+            image: w.image,
+          })),
+        );
+      })
+      .catch(console.error)
+      .finally(() => {
+        done();
+      });
+  });
+  it("should return all education", (done) => {
+    request(expressServer)
+      .post("/graphql")
+      .set("Authorization", "Bearer some token")
+      .send({
+        query: `
             query AllEducation {
                 education {
                     institution
@@ -155,20 +181,47 @@ describe("Resolvers", () => {
                 }
             }
         `,
-        }).then(response => {
-            expect(response.status).toBe(200);
-            expect(response.body.data.education).toEqual(RESUME.education.map(e => ({
-                institution: e.institution,
-                url: e.url ?? null,
-                area: e.area,
-                studyType: e.studyType,
-                startDate: e.startDate,
-                endDate: e.endDate,
-                score: e.score ?? null,
-                courses: e.courses ?? null,
-            })));
-        }).finally(() => {
-            done();
+      })
+      .then((response) => {
+        expect(response.status).toBe(200);
+        expect(response.body.data.education).toEqual(
+          RESUME.education.map((e) => ({
+            institution: e.institution,
+            url: e.url ?? null,
+            area: e.area,
+            studyType: e.studyType,
+            startDate: e.startDate,
+            endDate: e.endDate,
+            score: e.score ?? null,
+            courses: e.courses ?? null,
+          })),
+        );
+      })
+      .finally(() => {
+        done();
+      });
+  });
+  it("should call substack Feed Query", (done) => {
+    request(expressServer)
+      .post("/graphql")
+      .set("Authorization", "Bearer some token")
+      .send({
+        query: `
+              query GetSubstackRawData {
+                      getSubstackRawData {
+                        title
+                    }
+                  }`,
+      })
+      .then((response) => {
+        expect(response.status).toBe(200);
+        expect(response.body.data.getSubstackRawData).toBeDefined();
+        expect(response.body.data.getSubstackRawData).toEqual({
+          title: "The Substack Feed",
         });
-    });
+      })
+      .finally(() => {
+        done();
+      });
+  });
 });
