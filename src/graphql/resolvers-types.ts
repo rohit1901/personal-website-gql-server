@@ -99,6 +99,15 @@ export type GitHubRepo = {
   url?: Maybe<Scalars['String']['output']>;
 };
 
+export type GoodreadsItem = {
+  __typename?: 'GoodreadsItem';
+  authorName: Scalars['String']['output'];
+  bookDescription: Scalars['String']['output'];
+  bookImageUrl: Scalars['String']['output'];
+  link: Scalars['String']['output'];
+  title: Scalars['String']['output'];
+};
+
 export type Interest = {
   __typename?: 'Interest';
   keywords?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
@@ -163,6 +172,7 @@ export type Query = {
   basics?: Maybe<Basics>;
   certificates?: Maybe<Array<Maybe<Certificate>>>;
   education?: Maybe<Array<Maybe<Education>>>;
+  getGoodreadsBooks: Array<ReadingState>;
   getLiteralToken?: Maybe<AppTokenResponse>;
   getReadingStates: Array<ReadingState>;
   getSubstackRawData?: Maybe<Array<Maybe<SubstackItem>>>;
@@ -338,6 +348,7 @@ export type ResolversTypes = ResolversObject<{
   GQLDate: ResolverTypeWrapper<Scalars['GQLDate']['output']>;
   GitHubOwner: ResolverTypeWrapper<GitHubOwner>;
   GitHubRepo: ResolverTypeWrapper<GitHubRepo>;
+  GoodreadsItem: ResolverTypeWrapper<GoodreadsItem>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Interest: ResolverTypeWrapper<Interest>;
   Language: ResolverTypeWrapper<Language>;
@@ -372,6 +383,7 @@ export type ResolversParentTypes = ResolversObject<{
   GQLDate: Scalars['GQLDate']['output'];
   GitHubOwner: GitHubOwner;
   GitHubRepo: GitHubRepo;
+  GoodreadsItem: GoodreadsItem;
   ID: Scalars['ID']['output'];
   Interest: Interest;
   Language: Language;
@@ -478,6 +490,15 @@ export type GitHubRepoResolvers<ContextType = any, ParentType extends ResolversP
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type GoodreadsItemResolvers<ContextType = any, ParentType extends ResolversParentTypes['GoodreadsItem'] = ResolversParentTypes['GoodreadsItem']> = ResolversObject<{
+  authorName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  bookDescription?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  bookImageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  link?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type InterestResolvers<ContextType = any, ParentType extends ResolversParentTypes['Interest'] = ResolversParentTypes['Interest']> = ResolversObject<{
   keywords?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -534,6 +555,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   basics?: Resolver<Maybe<ResolversTypes['Basics']>, ParentType, ContextType>;
   certificates?: Resolver<Maybe<Array<Maybe<ResolversTypes['Certificate']>>>, ParentType, ContextType>;
   education?: Resolver<Maybe<Array<Maybe<ResolversTypes['Education']>>>, ParentType, ContextType>;
+  getGoodreadsBooks?: Resolver<Array<ResolversTypes['ReadingState']>, ParentType, ContextType>;
   getLiteralToken?: Resolver<Maybe<ResolversTypes['AppTokenResponse']>, ParentType, ContextType>;
   getReadingStates?: Resolver<Array<ResolversTypes['ReadingState']>, ParentType, ContextType>;
   getSubstackRawData?: Resolver<Maybe<Array<Maybe<ResolversTypes['SubstackItem']>>>, ParentType, ContextType>;
@@ -629,6 +651,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   GQLDate?: GraphQLScalarType;
   GitHubOwner?: GitHubOwnerResolvers<ContextType>;
   GitHubRepo?: GitHubRepoResolvers<ContextType>;
+  GoodreadsItem?: GoodreadsItemResolvers<ContextType>;
   Interest?: InterestResolvers<ContextType>;
   Language?: LanguageResolvers<ContextType>;
   Location?: LocationResolvers<ContextType>;
