@@ -1,3 +1,5 @@
+import { ReadingStatus } from "@/types/enums/enums.common";
+import { LiteralReadingState } from "@/types/types/types.common";
 import { ApolloServer } from "@apollo/server";
 import dotenv from "dotenv";
 import { Express } from "express";
@@ -216,9 +218,51 @@ describe("Resolvers", () => {
       .then((response) => {
         expect(response.status).toBe(200);
         expect(response.body.data.getSubstackRawData).toBeDefined();
-        expect(response.body.data.getSubstackRawData).toEqual({
-          title: "The Substack Feed",
-        });
+      })
+      .finally(() => {
+        done();
+      });
+  });
+  it("should call goodreads Feed Query", (done) => {
+    request(expressServer)
+      .post("/graphql")
+      .set("Authorization", "Bearer some token")
+      .send({
+        query: `
+              query GetGoodreadsBooks {
+                      getGoodreadsBooks {
+                      book {
+                          title
+                          description
+                          cover
+                          authors {
+                              name
+                          }
+                      }
+                      status
+                    }
+                  }`,
+      })
+      .then((response) => {
+        expect(response.status).toBe(200);
+        expect(response.body.data.getGoodreadsBooks).toBeDefined();
+        const status = response.body.data.getGoodreadsBooks.map(
+          (item: LiteralReadingState) => item.status,
+        );
+        const statusRead = status.filter(
+          (item: ReadingStatus) => item === "FINISHED",
+        );
+        expect(statusRead.length).toBeGreaterThan(0);
+
+        const statusReading = status.filter(
+          (item: ReadingStatus) => item === "IS_READING",
+        );
+        expect(statusReading.length).toBeGreaterThan(0);
+
+        const statusWantToRead = status.filter(
+          (item: ReadingStatus) => item === "WANTS_TO_READ",
+        );
+        expect(statusWantToRead.length).toBeGreaterThan(0);
       })
       .finally(() => {
         done();

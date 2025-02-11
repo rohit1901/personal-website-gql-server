@@ -1,4 +1,5 @@
 import { getGitHubRepos } from "@/controllers/github-controller";
+import { getGoodreadsShelves } from "@/controllers/goodreads-controller";
 import {
   getAwards,
   getBasics,
@@ -45,6 +46,8 @@ export const resolvers: Resolvers = {
       await getToken(context),
     getSubstackRawData: async (parent: any, args: any, context: AppContext) =>
       await getSubstackPosts(context),
+    getGoodreadsBooks: async (parent: any, args: any, context: AppContext) =>
+      await getGoodreadsShelves(context),
   },
   Mutation: {
     login: (parent: any, args: { email: string; password: string }) =>
@@ -80,6 +83,9 @@ export const devResolvers: Resolvers = {
       ReadingStates.myReadingStates,
     getLiteralToken: async (parent: any, args: any, context: AppContext) =>
       DEFAULT_LITERAL_TOKEN,
+    getGoodreadsBooks: async (parent: any, args: any, context: AppContext) =>
+      ReadingStates.myReadingStates,
+    // TODO: add mock data for substack
   },
   Mutation: {
     login: (parent: any, args: { email: string; password: string }) =>

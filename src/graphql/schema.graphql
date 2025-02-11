@@ -182,6 +182,14 @@ type SubstackItem {
     content: String!
 }
 
+type GoodreadsItem {
+    title: String!
+    link: String!
+    bookImageUrl: String!
+    authorName: String!
+    bookDescription: String!
+}
+
 type Mutation {
     login(email: String!, password: String!): UserLoginResponse!
 }
@@ -203,4 +211,5 @@ type Query {
     getReadingStates: [ReadingState!]!
     getLiteralToken: AppTokenResponse
     getSubstackRawData: [SubstackItem]
+    getGoodreadsBooks: [ReadingState!]!
 }
