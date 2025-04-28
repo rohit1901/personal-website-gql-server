@@ -9,9 +9,6 @@ export const getGitHubRawData = async () => {
     return await raw.json();
 }
 export const getGitHubRepos = async (context: AppContext) => {
-    if (!context.authorized) {
-        throw new Error("Unauthorized");
-    }
     const data = await getGitHubRawData();
     if (!data || 0 === data.length || data.message) {
         throw new Error(data.hasOwnProperty("message") ? data.message : "No data found");

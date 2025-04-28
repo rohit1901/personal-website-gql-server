@@ -47,9 +47,6 @@ const fetchShelfData = async (shelf: GoodreadsShelf, uriComponent: string) => {
 export const getGoodreadsShelves = async (
   context: AppContext,
 ): Promise<LiteralReadingState[]> => {
-  if (!context.authorized) {
-    throw new Error("Unauthorized");
-  }
 
   try {
     const readUriComponent = `${GOODREADS_FEED_SHELF_URL}read`;

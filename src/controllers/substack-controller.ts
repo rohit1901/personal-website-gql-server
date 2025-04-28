@@ -4,9 +4,6 @@ import { getFeedByLink, getPosts, getSubstackFeed } from "substack-feed-api";
 import { SUBSTACK_FEED_URL } from "../constants";
 
 export const getSubstackPosts = async (context: AppContext) => {
-  if (!context.authorized) {
-    throw new Error("Unauthorized");
-  }
   try {
     const uriComponent = `${SUBSTACK_FEED_URL}/feed`;
     const rawRes = await getSubstackFeed(uriComponent);

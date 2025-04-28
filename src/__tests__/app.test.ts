@@ -10,6 +10,7 @@ let apolloServer: ApolloServer;
 let expressServer: Express;
 dotenv.config({ path: "../../.env.test" });
 beforeAll((done) => {
+  // TODO: Fix tests
   createApolloServer()
     .then((result) => {
       apolloServer = result.apolloServer;
