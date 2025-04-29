@@ -1,6 +1,4 @@
 import {getMongoDb} from "../config/db";
-import {Auth, LiteralReadingState, LiteralSecrets} from "@/types/types/types.common";
-import {getGraphQLQueryStr} from "@/utils/index";
 import {AppContext} from "@/types/interfaces/interfaces.common";
 
 export const getBasics = async (context: AppContext) => {

@@ -1,9 +1,0 @@
-{
-  "version": "1",
-  "name": "khanduri-graphql-server",
-  "type": "collection",
-  "ignore": [
-    "node_modules",
-    ".git"
-  ]
-}
