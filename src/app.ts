@@ -9,10 +9,14 @@ import rateLimit from "express-rate-limit";
 import { readFileSync } from "node:fs";
 import { ApolloServer } from "@apollo/server";
 import { devResolvers, resolvers } from "./resolvers";
+import {
+  expressMiddleware,
+  ExpressMiddlewareOptions,
+} from "@apollo/server/express4";
 import { errorResponse } from "@/middleware/error-middleware";
 import { AppContext } from "@/types/interfaces/interfaces.common";
-import { AUTH0_SCOPES, isProd } from "./constants";
-import { auth0Middleware } from "./middleware/auth0-middleware";
+import { AUTH0_SCOPES, isDev, isProd } from "./constants";
+import { auth0Middleware, checkAuth0ScopesMiddleware } from "./middleware/auth0-middleware";
 import { requiredScopes } from "express-oauth2-jwt-bearer";
 // TODO: test expired literal token flow
 // Setup .env variables for app usage
@@ -60,13 +64,12 @@ export const createApolloServer = async (): Promise<{
 
   // Secure against param pollutions
   expressServer.use(hpp());
-
-  // Register Auth0 middleware
-  expressServer.use(auth0Middleware);
-  expressServer.use(requiredScopes(AUTH0_SCOPES));
   await apolloServer.start();
   expressServer.use(
     "/graphql",
+    auth0Middleware({ authRequired: isProd() }),
+    checkAuth0ScopesMiddleware(isProd() ? AUTH0_SCOPES : undefined),
+    expressMiddleware(apolloServer),
     errorResponse,
   );
   return { apolloServer, expressServer };

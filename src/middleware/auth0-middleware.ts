@@ -1,16 +1,32 @@
-import { auth } from "express-oauth2-jwt-bearer";
-import { isProd } from "../constants";
+import { NextFunction, Request, Response } from "express";
+import { AUTH0_SCOPES, isProd } from "../constants";
+import { auth, AuthOptions, requiredScopes } from "express-oauth2-jwt-bearer";
 
-const authConfig = {
-    audience: process.env.AUTH0_AUDIENCE ?? "",
-    issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}/`,
-    tokenSigningAlg: "RS256",
-};
-
-export const auth0Middleware = (options?: any) => {
-    if(!isProd()) return true;
-    return auth({
-        ...authConfig,
+export const auth0Middleware = (options?: AuthOptions) => {
+    const authConfig = {
         ...options,
-    });
+        audience: process.env.AUTH0_AUDIENCE,
+        issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}/`,
+        tokenSigningAlg: "RS256",
+    };
+
+    return (req: Request, res: Response, next: NextFunction) => {
+        console.log(options?.authRequired)
+        if (options?.authRequired === false) {
+            // Skip authentication if authRequired is false and no token is provided
+            return next();
+        }
+        // Otherwise, validate the token
+        const authMiddleware = auth(authConfig);
+        return authMiddleware(req, res, next);
+    };
 };
+
+export const checkAuth0ScopesMiddleware = (scopes?: string | string[]) => (req: Request, res: Response, next: NextFunction) => {
+    if (scopes) {
+    // If Authorization header exists, apply requiredScopes middleware
+    return requiredScopes(scopes)(req, res, next);
+    }
+    // Otherwise, skip requiredScopes and proceed
+    return next();
+}
