@@ -15,7 +15,6 @@ import { AppContext } from "@/types/interfaces/interfaces.common";
 import fetchMeta from "@/utils/fetch-meta-tags";
 import { transformGitHubData } from "@/utils/index";
 import { GITHUB_REPOS, RESUME } from "../data";
-import { ReadingStates, UserLogin } from "../data/books";
 import { GitHubRepo, Resolvers } from "../graphql/resolvers-types";
 
 export const resolvers: Resolvers = {
@@ -42,10 +41,6 @@ export const resolvers: Resolvers = {
       await getSubstackPosts(context),
     getGoodreadsBooks: async (parent: any, args: any, context: AppContext) =>
       await getGoodreadsShelves(context),
-  },
-  Mutation: {
-    login: (parent: any, args: { email: string; password: string }) =>
-      UserLogin.login,
   },
 };
 export const devResolvers: Resolvers = {
@@ -74,11 +69,6 @@ export const devResolvers: Resolvers = {
       return transformGitHubData(meta, GITHUB_REPOS[0].owner);
     },
     getGoodreadsBooks: async (parent: any, args: any, context: AppContext) =>
-      ReadingStates.myReadingStates,
-    // TODO: add mock data for substack
-  },
-  Mutation: {
-    login: (parent: any, args: { email: string; password: string }) =>
-      UserLogin.login,
+      await getGoodreadsShelves(context),
   },
 };

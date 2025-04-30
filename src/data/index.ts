@@ -299,12 +299,6 @@ export const RESUME: ResumeSchema = {
         },
     ],
 };
-export const DEFAULT_LITERAL_TOKEN: LiteralSecrets = {
-    token: "authToken",
-    createdOn: new Date(),
-    // after six months
-    expiresOn: new Date(new Date().setMonth(new Date().getMonth() + 6)),
-};
 export const GITHUB_REPOS = [
     {
         "id": 762145544,

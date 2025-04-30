@@ -30,13 +30,11 @@ export const getTokenFromAuthorizationHeader = (authorization?: string): string 
  * @param avatar_url {string | undefined} - the avatar url
  * @param html_url {string | undefined} - the html url
  */
-export const transformGitHubData = (data: GitHubRepo[], {login, avatar_url, html_url}: GitHubOwner): GitHubRepo[] => {
-    return data.map(m => ({
-        ...m,
-        title: m.title?.split(":")[0],
-        description: m.title?.split(":")[1],
-        login,
-        avatar_url,
-        html_url
-    }));
-}
+export const transformGitHubData = (data: GitHubRepo[], {login, avatar_url, html_url}: GitHubOwner): GitHubRepo[] => data.map(m => ({
+    ...m,
+    title: m.title?.split(":")[0],
+    description: m.title?.split(":")[1],
+    login,
+    avatar_url,
+    html_url
+}));

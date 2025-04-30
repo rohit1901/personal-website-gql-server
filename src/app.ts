@@ -8,7 +8,7 @@ import rateLimit from "express-rate-limit";
 // Import routes from the ./routes
 import { readFileSync } from "node:fs";
 import { ApolloServer } from "@apollo/server";
-import { devResolvers, resolvers } from "./resolvers";
+import { devResolvers, resolvers } from "@/resolvers/index";
 import {
   expressMiddleware,
   ExpressMiddlewareOptions,
@@ -18,7 +18,6 @@ import { AppContext } from "@/types/interfaces/interfaces.common";
 import { AUTH0_SCOPES, isDev, isProd } from "./constants";
 import { auth0Middleware, checkAuth0ScopesMiddleware } from "./middleware/auth0-middleware";
 import { requiredScopes } from "express-oauth2-jwt-bearer";
-// TODO: test expired literal token flow
 // Setup .env variables for app usage
 dotenv.config();
 
@@ -64,7 +63,10 @@ export const createApolloServer = async (): Promise<{
 
   // Secure against param pollutions
   expressServer.use(hpp());
+
   await apolloServer.start();
+
+  // Auth0 Middleware for all `/graphql` endpoints
   expressServer.use(
     "/graphql",
     auth0Middleware({ authRequired: isProd() }),
@@ -74,6 +76,7 @@ export const createApolloServer = async (): Promise<{
   );
   return { apolloServer, expressServer };
 };
+
 createApolloServer()
   .then(async ({ apolloServer, expressServer }) => {
     expressServer.listen(PORT, () =>

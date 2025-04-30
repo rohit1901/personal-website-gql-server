@@ -21,23 +21,21 @@ const GOODREADS_SHELF: Record<GoodreadsShelf, ReadingStatus> = {
 const transformGoodreadsData = (
   data: GoodreadsItem,
   shelfType: GoodreadsShelf,
-): LiteralReadingState => {
-  return {
-    status: GOODREADS_SHELF[shelfType],
-    book: {
-      id: randomUUID(),
-      slug: data.link,
-      title: data.title,
-      description: data.book_description,
-      cover: data.book_image_url,
-      authors: [
-        {
-          name: data.author_name,
-        },
-      ],
-    },
-  };
-};
+): LiteralReadingState => ({
+  status: GOODREADS_SHELF[shelfType],
+  book: {
+    id: randomUUID(),
+    slug: data.link,
+    title: data.title,
+    description: data.book_description,
+    cover: data.book_image_url,
+    authors: [
+      {
+        name: data.author_name,
+      },
+    ],
+  },
+});
 const fetchShelfData = async (shelf: GoodreadsShelf, uriComponent: string) => {
   const feedData = await getGoodreadsFeed(uriComponent);
   return getGoodreadsFeedItems(feedData).map((item) =>

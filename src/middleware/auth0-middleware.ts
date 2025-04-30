@@ -11,21 +11,19 @@ export const auth0Middleware = (options?: AuthOptions) => {
     };
 
     return (req: Request, res: Response, next: NextFunction) => {
-        console.log(options?.authRequired)
-        if (options?.authRequired === false) {
+        if (!options || !options?.authRequired) {
             // Skip authentication if authRequired is false and no token is provided
             return next();
         }
         // Otherwise, validate the token
-        const authMiddleware = auth(authConfig);
-        return authMiddleware(req, res, next);
+        return auth(authConfig)(req, res, next);
     };
 };
 
 export const checkAuth0ScopesMiddleware = (scopes?: string | string[]) => (req: Request, res: Response, next: NextFunction) => {
     if (scopes) {
     // If Authorization header exists, apply requiredScopes middleware
-    return requiredScopes(scopes)(req, res, next);
+        return requiredScopes(scopes)(req, res, next);
     }
     // Otherwise, skip requiredScopes and proceed
     return next();

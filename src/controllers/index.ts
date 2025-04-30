@@ -2,7 +2,6 @@ import {getMongoDb} from "../config/db";
 import {AppContext} from "@/types/interfaces/interfaces.common";
 
 export const getBasics = async (context: AppContext) => {
-    
     const db = await getMongoDb();
     const data = await db?.collection("resume").findOne();
     return data?.basics;
