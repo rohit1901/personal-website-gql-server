@@ -6,9 +6,7 @@ import {
   getCertificates,
   getEducation,
   getLanguages,
-  getMyReadingStates,
   getPublications,
-  getToken,
   getVolunteer,
   getWork,
 } from "@/controllers/index";
@@ -16,8 +14,7 @@ import { getSubstackPosts } from "@/controllers/substack-controller";
 import { AppContext } from "@/types/interfaces/interfaces.common";
 import fetchMeta from "@/utils/fetch-meta-tags";
 import { transformGitHubData } from "@/utils/index";
-import { DEFAULT_LITERAL_TOKEN, GITHUB_REPOS, RESUME } from "../data";
-import { ReadingStates, UserLogin } from "../data/books";
+import { GITHUB_REPOS, RESUME } from "../data";
 import { GitHubRepo, Resolvers } from "../graphql/resolvers-types";
 
 export const resolvers: Resolvers = {
@@ -40,18 +37,10 @@ export const resolvers: Resolvers = {
       await getCertificates(context),
     gitHubRepos: async (parent: any, args: any, context: AppContext) =>
       await getGitHubRepos(context),
-    getReadingStates: async (parent: any, args: any, context: AppContext) =>
-      await getMyReadingStates(context),
-    getLiteralToken: async (parent: any, args: any, context: AppContext) =>
-      await getToken(context),
     getSubstackRawData: async (parent: any, args: any, context: AppContext) =>
       await getSubstackPosts(context),
     getGoodreadsBooks: async (parent: any, args: any, context: AppContext) =>
       await getGoodreadsShelves(context),
-  },
-  Mutation: {
-    login: (parent: any, args: { email: string; password: string }) =>
-      UserLogin.login,
   },
 };
 export const devResolvers: Resolvers = {
@@ -79,16 +68,9 @@ export const devResolvers: Resolvers = {
       const meta: GitHubRepo[] = await Promise.all(rawMeta);
       return transformGitHubData(meta, GITHUB_REPOS[0].owner);
     },
-    getReadingStates: async (parent: any, args: any, context: AppContext) =>
-      ReadingStates.myReadingStates,
-    getLiteralToken: async (parent: any, args: any, context: AppContext) =>
-      DEFAULT_LITERAL_TOKEN,
+    getSubstackRawData: async (parent: any, args: any, context: AppContext) =>
+      await getSubstackPosts(context),
     getGoodreadsBooks: async (parent: any, args: any, context: AppContext) =>
-      ReadingStates.myReadingStates,
-    // TODO: add mock data for substack
-  },
-  Mutation: {
-    login: (parent: any, args: { email: string; password: string }) =>
-      UserLogin.login,
+      await getGoodreadsShelves(context),
   },
 };

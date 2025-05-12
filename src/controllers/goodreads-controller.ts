@@ -21,23 +21,21 @@ const GOODREADS_SHELF: Record<GoodreadsShelf, ReadingStatus> = {
 const transformGoodreadsData = (
   data: GoodreadsItem,
   shelfType: GoodreadsShelf,
-): LiteralReadingState => {
-  return {
-    status: GOODREADS_SHELF[shelfType],
-    book: {
-      id: randomUUID(),
-      slug: data.link,
-      title: data.title,
-      description: data.book_description,
-      cover: data.book_image_url,
-      authors: [
-        {
-          name: data.author_name,
-        },
-      ],
-    },
-  };
-};
+): LiteralReadingState => ({
+  status: GOODREADS_SHELF[shelfType],
+  book: {
+    id: randomUUID(),
+    slug: data.link,
+    title: data.title,
+    description: data.book_description,
+    cover: data.book_image_url,
+    authors: [
+      {
+        name: data.author_name,
+      },
+    ],
+  },
+});
 const fetchShelfData = async (shelf: GoodreadsShelf, uriComponent: string) => {
   const feedData = await getGoodreadsFeed(uriComponent);
   return getGoodreadsFeedItems(feedData).map((item) =>
@@ -47,9 +45,6 @@ const fetchShelfData = async (shelf: GoodreadsShelf, uriComponent: string) => {
 export const getGoodreadsShelves = async (
   context: AppContext,
 ): Promise<LiteralReadingState[]> => {
-  if (!context.authorized) {
-    throw new Error("Unauthorized");
-  }
 
   try {
     const readUriComponent = `${GOODREADS_FEED_SHELF_URL}read`;
