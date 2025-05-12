@@ -68,6 +68,8 @@ export const devResolvers: Resolvers = {
       const meta: GitHubRepo[] = await Promise.all(rawMeta);
       return transformGitHubData(meta, GITHUB_REPOS[0].owner);
     },
+    getSubstackRawData: async (parent: any, args: any, context: AppContext) =>
+      await getSubstackPosts(context),
     getGoodreadsBooks: async (parent: any, args: any, context: AppContext) =>
       await getGoodreadsShelves(context),
   },
