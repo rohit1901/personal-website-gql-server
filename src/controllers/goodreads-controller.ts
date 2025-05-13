@@ -38,7 +38,7 @@ const transformGoodreadsData = (
 });
 const fetchShelfData = async (shelf: GoodreadsShelf, uriComponent: string) => {
   const feedData = await getGoodreadsFeed(uriComponent);
-  return getGoodreadsFeedItems(feedData).map((item) =>
+  return getGoodreadsFeedItems(feedData).map((item: GoodreadsItem) =>
     transformGoodreadsData(item, shelf),
   );
 };
