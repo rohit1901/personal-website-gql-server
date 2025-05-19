@@ -1,4 +1,4 @@
-import {GitHubOwner, GitHubRepo} from "../graphql/resolvers-types";
+import { GitHubOwner, GitHubRepo } from '../graphql/resolvers-types';
 
 /**
  * Get the GraphQL query string
@@ -6,7 +6,8 @@ import {GitHubOwner, GitHubRepo} from "../graphql/resolvers-types";
  * @param variables {any} - the variables to pass to the query
  * @returns {string} - the GraphQL query string
  */
-export const getGraphQLQueryStr = (taggedQuery: string, variables?: any) => JSON.stringify({query: taggedQuery, variables});
+export const getGraphQLQueryStr = (taggedQuery: string, variables?: any) =>
+  JSON.stringify({ query: taggedQuery, variables });
 /**
  * Get the Token from the Authorization header.
  * @param authorization {string} - the Authorization header
@@ -14,11 +15,13 @@ export const getGraphQLQueryStr = (taggedQuery: string, variables?: any) => JSON
  * @example
  * Bearer cdccasd== => cdccasd==
  */
-export const getTokenFromAuthorizationHeader = (authorization?: string): string | undefined => {
-    if (!authorization) {
-        return;
-    }
-    return authorization.split(" ")[1];
+export const getTokenFromAuthorizationHeader = (
+  authorization?: string,
+): string | undefined => {
+  if (!authorization) {
+    return;
+  }
+  return authorization.split(' ')[1];
 };
 
 /**
@@ -30,11 +33,15 @@ export const getTokenFromAuthorizationHeader = (authorization?: string): string 
  * @param avatar_url {string | undefined} - the avatar url
  * @param html_url {string | undefined} - the html url
  */
-export const transformGitHubData = (data: GitHubRepo[], {login, avatar_url, html_url}: GitHubOwner): GitHubRepo[] => data.map(m => ({
+export const transformGitHubData = (
+  data: GitHubRepo[],
+  { login, avatar_url, html_url }: GitHubOwner,
+): GitHubRepo[] =>
+  data.map((m) => ({
     ...m,
-    title: m.title?.split(":")[0],
-    description: m.title?.split(":")[1],
+    title: m.title?.split(':')[0],
+    description: m.title?.split(':')[1],
     login,
     avatar_url,
-    html_url
-}));
+    html_url,
+  }));

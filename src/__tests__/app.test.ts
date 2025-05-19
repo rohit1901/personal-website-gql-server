@@ -1,14 +1,14 @@
-import { ReadingStatus } from "@/types/enums/enums.common";
-import { LiteralReadingState } from "@/types/types/types.common";
-import { ApolloServer } from "@apollo/server";
-import dotenv from "dotenv";
-import { Express } from "express";
-import request from "supertest";
-import { createApolloServer } from "../app";
-import { RESUME } from "../data";
+import { ReadingStatus } from '@/types/enums/enums.common';
+import { LiteralReadingState } from '@/types/types/types.common';
+import { ApolloServer } from '@apollo/server';
+import dotenv from 'dotenv';
+import { Express } from 'express';
+import request from 'supertest';
+import { createApolloServer } from '../app';
+import { RESUME } from '../data';
 let apolloServer: ApolloServer;
 let expressServer: Express;
-dotenv.config({ path: "../../.env.test" });
+dotenv.config({ path: '../../.env.test' });
 beforeAll((done) => {
   // TODO: Fix tests
   createApolloServer()
@@ -28,11 +28,11 @@ afterAll((done) => {
     done();
   });
 });
-describe("Setup tests", () => {
-  it("should setup the Apollo Server", () => {
+describe('Setup tests', () => {
+  it('should setup the Apollo Server', () => {
     expect(apolloServer).toBeDefined();
   });
-  it("should setup the Express Server", () => {
+  it('should setup the Express Server', () => {
     expect(expressServer).toBeDefined();
   });
 });
@@ -58,11 +58,11 @@ describe("Setup tests", () => {
         });
     });
 });*/
-describe("Resolvers", () => {
-  it("should return all certificates", (done) => {
+describe('Resolvers', () => {
+  it('should return all certificates', (done) => {
     request(expressServer)
-      .post("/graphql")
-      .set("Authorization", "Bearer some_token")
+      .post('/graphql')
+      .set('Authorization', 'Bearer some_token')
       .send({
         query: `
             query AllCertificates {
@@ -88,10 +88,10 @@ describe("Resolvers", () => {
         done();
       });
   });
-  it("should return all basics", (done) => {
+  it('should return all basics', (done) => {
     request(expressServer)
-      .post("/graphql")
-      .set("Authorization", "Bearer some token")
+      .post('/graphql')
+      .set('Authorization', 'Bearer some token')
       .send({
         query: `
             query AllBasics {
@@ -125,10 +125,10 @@ describe("Resolvers", () => {
         done();
       });
   });
-  it("should return all work", (done) => {
+  it('should return all work', (done) => {
     request(expressServer)
-      .post("/graphql")
-      .set("Authorization", "Bearer some token")
+      .post('/graphql')
+      .set('Authorization', 'Bearer some token')
       .send({
         query: `
             query AllWorkExperience {
@@ -165,10 +165,10 @@ describe("Resolvers", () => {
         done();
       });
   });
-  it("should return all education", (done) => {
+  it('should return all education', (done) => {
     request(expressServer)
-      .post("/graphql")
-      .set("Authorization", "Bearer some token")
+      .post('/graphql')
+      .set('Authorization', 'Bearer some token')
       .send({
         query: `
             query AllEducation {
@@ -204,10 +204,10 @@ describe("Resolvers", () => {
         done();
       });
   });
-  it("should call substack Feed Query", (done) => {
+  it('should call substack Feed Query', (done) => {
     request(expressServer)
-      .post("/graphql")
-      .set("Authorization", "Bearer some token")
+      .post('/graphql')
+      .set('Authorization', 'Bearer some token')
       .send({
         query: `
               query GetSubstackRawData {
@@ -224,10 +224,10 @@ describe("Resolvers", () => {
         done();
       });
   });
-  it("should call goodreads Feed Query", (done) => {
+  it('should call goodreads Feed Query', (done) => {
     request(expressServer)
-      .post("/graphql")
-      .set("Authorization", "Bearer some token")
+      .post('/graphql')
+      .set('Authorization', 'Bearer some token')
       .send({
         query: `
               query GetGoodreadsBooks {
@@ -251,17 +251,17 @@ describe("Resolvers", () => {
           (item: LiteralReadingState) => item.status,
         );
         const statusRead = status.filter(
-          (item: ReadingStatus) => item === "FINISHED",
+          (item: ReadingStatus) => item === 'FINISHED',
         );
         expect(statusRead.length).toBeGreaterThan(0);
 
         const statusReading = status.filter(
-          (item: ReadingStatus) => item === "IS_READING",
+          (item: ReadingStatus) => item === 'IS_READING',
         );
         expect(statusReading.length).toBeGreaterThan(0);
 
         const statusWantToRead = status.filter(
-          (item: ReadingStatus) => item === "WANTS_TO_READ",
+          (item: ReadingStatus) => item === 'WANTS_TO_READ',
         );
         expect(statusWantToRead.length).toBeGreaterThan(0);
       })

@@ -1,4 +1,4 @@
-import { ReadingStatus } from "@/types/enums/enums.common";
+import { ReadingStatus } from '@/types/enums/enums.common';
 
 export type AppSecrets = {
   secret: string;
@@ -28,4 +28,4 @@ export type LiteralReadingState = {
   book: LiteralBook;
   status: ReadingStatus;
 };
-export type GoodreadsShelf = "READ" | "READING" | "TO_READ";
+export type GoodreadsShelf = 'READ' | 'READING' | 'TO_READ';

@@ -1,5 +1,5 @@
-import { getGitHubRepos } from "@/controllers/github-controller";
-import { getGoodreadsShelves } from "@/controllers/goodreads-controller";
+import { getGitHubRepos } from '@/controllers/github-controller';
+import { getGoodreadsShelves } from '@/controllers/goodreads-controller';
 import {
   getAwards,
   getBasics,
@@ -9,13 +9,13 @@ import {
   getPublications,
   getVolunteer,
   getWork,
-} from "@/controllers/index";
-import { getSubstackPosts } from "@/controllers/substack-controller";
-import { AppContext } from "@/types/interfaces/interfaces.common";
-import fetchMeta from "@/utils/fetch-meta-tags";
-import { transformGitHubData } from "@/utils/index";
-import { GITHUB_REPOS, RESUME } from "../data";
-import { GitHubRepo, Resolvers } from "../graphql/resolvers-types";
+} from '@/controllers/index';
+import { getSubstackPosts } from '@/controllers/substack-controller';
+import { AppContext } from '@/types/interfaces/interfaces.common';
+import fetchMeta from '@/utils/fetch-meta-tags';
+import { transformGitHubData } from '@/utils/index';
+import { GITHUB_REPOS, RESUME } from '../data';
+import { GitHubRepo, Resolvers } from '../graphql/resolvers-types';
 
 export const resolvers: Resolvers = {
   Query: {
