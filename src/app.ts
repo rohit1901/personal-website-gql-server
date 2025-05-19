@@ -11,16 +11,14 @@ import { ApolloServer } from '@apollo/server';
 import { devResolvers, resolvers } from '@/resolvers/index';
 import {
   expressMiddleware,
-  ExpressMiddlewareOptions,
 } from '@apollo/server/express4';
 import { errorResponse } from '@/middleware/error-middleware';
 import { AppContext } from '@/types/interfaces/interfaces.common';
-import { AUTH0_SCOPES, isDev, isProd } from './constants';
+import { AUTH0_SCOPES, isProd } from './constants';
 import {
   auth0Middleware,
   checkAuth0ScopesMiddleware,
 } from './middleware/auth0-middleware';
-import { requiredScopes } from 'express-oauth2-jwt-bearer';
 // Setup .env variables for app usage
 dotenv.config();
 
