@@ -16,7 +16,12 @@ export const auth0Middleware = (options?: AuthOptions) => {
       return next();
     }
     // Otherwise, validate the token
-    return auth(authConfig)(req, res, next);
+    return auth(authConfig)(req, res, (err?: any) => {
+      if (err) {
+        console.error('Auth0 middleware: authentication error', err);
+      }
+      next(err);
+    });
   };
 };
 
