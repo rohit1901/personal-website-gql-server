@@ -11,6 +11,7 @@ export const auth0Middleware = (options?: AuthOptions) => {
   };
 
   return (req: Request, res: Response, next: NextFunction) => {
+    console.log("req headers", req.headers);
     if (!options || !options?.authRequired) {
       // Skip authentication if authRequired is false and no token is provided
       return next();
