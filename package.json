@@ -33,7 +33,9 @@
     "@/controllers": "dist/controllers",
     "@/db": "dist/db",
     "@/utils": "dist/utils",
-    "@/resolvers": "dist/resolvers"
+    "@/resolvers": "dist/resolvers",
+    "@/config": "dist/config",
+    "@/constants": "dist/constants"
   },
   "license": "MIT",
   "dependencies": {
