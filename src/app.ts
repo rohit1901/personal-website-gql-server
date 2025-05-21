@@ -12,12 +12,12 @@ import { devResolvers, resolvers } from '@/resolvers/index';
 import { expressMiddleware } from '@apollo/server/express4';
 import { errorResponse } from '@/middleware/error-middleware';
 import { AppContext } from '@/types/interfaces/interfaces.common';
-import { AUTH0_SCOPES, isProd } from './constants';
+import { AUTH0_SCOPES, isProd } from '@/constants/index';
 import {
   auth0Middleware,
   checkAuth0ScopesMiddleware,
-} from './middleware/auth0-middleware';
-import { getMongoDb } from 'config/db';
+} from '@/middleware/auth0-middleware';
+import { getMongoDb } from '@/config/db';
 // Setup .env variables for app usage
 dotenv.config();
 
