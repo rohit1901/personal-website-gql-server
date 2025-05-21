@@ -9,9 +9,7 @@ import rateLimit from 'express-rate-limit';
 import { readFileSync } from 'node:fs';
 import { ApolloServer } from '@apollo/server';
 import { devResolvers, resolvers } from '@/resolvers/index';
-import {
-  expressMiddleware,
-} from '@apollo/server/express4';
+import { expressMiddleware } from '@apollo/server/express4';
 import { errorResponse } from '@/middleware/error-middleware';
 import { AppContext } from '@/types/interfaces/interfaces.common';
 import { AUTH0_SCOPES, isProd } from './constants';
@@ -19,6 +17,7 @@ import {
   auth0Middleware,
   checkAuth0ScopesMiddleware,
 } from './middleware/auth0-middleware';
+import { getMongoDb } from 'config/db';
 // Setup .env variables for app usage
 dotenv.config();
 
@@ -36,6 +35,9 @@ export const createApolloServer = async (): Promise<{
 }> => {
   // Init express app
   const expressServer = express();
+
+  // connect to MongoDB
+  const db = await getMongoDb();
   const apolloServer = new ApolloServer<AppContext>({
     typeDefs,
     resolvers: isProd() ? resolvers : devResolvers,
@@ -45,7 +47,7 @@ export const createApolloServer = async (): Promise<{
   expressServer.use(express.json());
 
   // Detailed server logging
-  expressServer.use(morgan('dev'));
+  expressServer.use(morgan(isProd() ? 'combined' : 'dev'));
 
   // Limit rate of requests
   // Alternatively, you can pass through specific routes for different limits based on route
@@ -72,7 +74,11 @@ export const createApolloServer = async (): Promise<{
     '/graphql',
     auth0Middleware({ authRequired: isProd() }),
     checkAuth0ScopesMiddleware(isProd() ? AUTH0_SCOPES : undefined),
-    expressMiddleware(apolloServer),
+    expressMiddleware(apolloServer, {
+      context: async () => ({
+        db,
+      }),
+    }),
     errorResponse,
   );
   return { apolloServer, expressServer };

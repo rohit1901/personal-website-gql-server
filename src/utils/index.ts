@@ -45,3 +45,26 @@ export const transformGitHubData = (
     avatar_url,
     html_url,
   }));
+
+/**
+ * a wrapper function to handle errors
+ * @param fn callback function to execute
+ * @param errorMessage message to log in case of error
+ * @returns {Promise<T | undefined>} - the result of the function or undefined
+ * @example
+ * withErrorHandling(async () => {
+ *   const data = await db?.collection('resume').findOne();
+ *   return data?.basics;
+ * }, 'Failed to fetch basics');
+ */
+export async function withErrorHandling<T>(
+  fn: () => Promise<T>,
+  errorMessage = 'Operation failed',
+): Promise<T | undefined> {
+  try {
+    return await fn();
+  } catch (error) {
+    console.error(errorMessage, error);
+    throw new Error(errorMessage);
+  }
+}

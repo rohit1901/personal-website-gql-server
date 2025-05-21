@@ -1,3 +1,5 @@
+import { Db } from 'mongodb';
+
 // Interface for custom class ApiError
 export interface ApiError extends Error {
   success: boolean;
@@ -13,8 +15,7 @@ export interface User {
 
 export interface AppContext {
   authorized?: boolean;
-  xLiteralToken?: string;
-  isTokenExpired?: boolean;
+  db?: Db;
 }
 
 /**
